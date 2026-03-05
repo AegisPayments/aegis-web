@@ -24,6 +24,7 @@ export interface DemoScenario {
     title: string;
     description: string;
     merchantType: string;
+    flowType?: "standard" | "rejection";
     userWallet: string;
     merchantWallet: string;
     steps: DemoStep[];
@@ -270,6 +271,148 @@ export const demoConfig: TDemoConfig = {
                         balance: "$992.75",
                         status: "Task Complete",
                         actionStepTitle: "Complete Task — Pay $7.25",
+                        progress: 100
+                    }
+                }
+            ]
+        },
+        {
+            id: "suspicious-increment",
+            title: "Suspicious Increment — Rejected",
+            description: "Merchant attempts an unusually large fare adjustment that triggers the AI Risk Engine's fraud detection and gets blocked",
+            merchantType: "RIDE_SHARE",
+            flowType: "rejection",
+            userWallet: "0x9F77cBDb561aaD32b403695306e3eea53F9B40e7",
+            merchantWallet: "0x8F88cBDb561aaD32b403695306e3eea53F9B50f8",
+            steps: [
+                {
+                    id: 1,
+                    title: "Sign & Authorize Ride",
+                    description: "Normal ride authorization for $18. The CRE workflow validates the signature, runs AI fraud detection, and approves the authorization on-chain. This step succeeds — the suspicious activity comes next.",
+                    userAction: "User books a standard ride. Authorization for $18 is signed and processed normally through the Aegis CRE workflow.",
+                    terminalPanes: [
+                        {
+                            label: "Sign Payload",
+                            command: "cd testing && echo '{\"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 1}' | node sig-gen-minimal.js",
+                            output: "🔐 Generating EIP-712 signature...\\n📝 Domain: AegisPayProtocol v1.0.0\\n✅ Signature: 0x2b3c4d5e6f7890abcdef1234567890abcdef12...\\n📋 Payload ready for authorize workflow"
+                        },
+                        {
+                            label: "Run Authorize",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 1, \"signature\": \"0x2b3c4d...\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User ride history — 15 previous trips\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ Risk Level: LOW — Established ride-share user\\n  └─ Amount $18.00 within normal fare range\\n  └─ Fraud Indicators: None detected\\n✅ Authorization APPROVED: $18.00\\n⚡ authorize() executed via Chainlink Forwarder\\n📊 Authorization log written to Firestore"
+                        }
+                    ],
+                    appState: {
+                        currentAuth: "$18.00",
+                        balance: "$982.00",
+                        status: "Ride Authorized",
+                        actionStepTitle: "Book Ride — Authorize $18",
+                        progress: 30
+                    }
+                },
+                {
+                    id: 2,
+                    title: "AI Risk Engine: Suspicious Increment REJECTED",
+                    description: "The merchant submits a secureIncrement from $18 to $95 — a 428% increase that far exceeds the RIDE_SHARE category's 50% variance limit. The Aegis AI Risk Engine detects this as potential merchant fraud and blocks the on-chain execution. The rejection is logged to Firestore risk-assessments collection.",
+                    userAction: "Merchant requests $95 total fare (428% increase). Aegis AI Risk Engine flags this as suspicious — far exceeding RIDE_SHARE variance limits. Increment is REJECTED and logged.",
+                    terminalPanes: [
+                        {
+                            label: "Secure Increment",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"secureIncrement\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"currentAuth\": 18, \"requestedTotal\": 95, \"reason\": \"Extended premium route requested\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            output: "🔄 Secure increment workflow triggered\\n🗄️ Firebase context: Previous ride patterns analyzed\\n🤖 Aegis AI Risk Engine:\\n  └─ Merchant Type: RIDE_SHARE (up to 50% variance allowed)\\n  └─ Request: $18.00 → $95.00 (+428%)\\n  └─ ⚠️ VARIANCE EXCEEDED: 428% far exceeds 50% limit\\n  └─ ⚠️ Amount $95.00 is 5x user's average fare\\n  └─ Risk Level: HIGH — Potential merchant fraud\\n❌ INCREMENT REJECTED: Exceeds risk threshold\\n⚡ On-chain execution blocked — authorization unchanged\\n📊 Rejection logged to Firestore risk-assessments"
+                        }
+                    ],
+                    appState: {
+                        currentAuth: "$18.00",
+                        balance: "$982.00",
+                        status: "Increment Rejected",
+                        actionStepTitle: "⚠ Suspicious Increment",
+                        progress: 50
+                    }
+                },
+                {
+                    id: 3,
+                    title: "Capture Original Amount & Release Excess",
+                    description: "Despite the rejected increment, the ride completes normally on the original route at $16. The merchant captures $16 via captureFunds(). The smart contract releases the remaining $2 back to the user. The rejection didn't affect the original authorization — the user's funds were protected throughout.",
+                    userAction: "Ride ends on original route at $16. Merchant captures $16. Smart contract releases $2 back to user. CRE log triggers update Firestore.",
+                    terminalPanes: [
+                        {
+                            label: "Capture Funds",
+                            command: "make capture-funds PROTOCOL=0xProtocolAddress USER_ADDRESS=0x9F77cBDb561aaD32b403695306e3eea53F9B40e7 AMOUNT=16000000 FLAGS=--broadcast",
+                            output: "🔄 Executing captureFunds() on-chain...\\n✅ Transaction confirmed: 0xd456e789f012345678901234567890abcdef0123...\\n💰 Captured(user: 0x9F77..., merchant: 0x8F88..., amount: 16000000)\\n↩️ FundsReleased(user: 0x9F77..., amount: 2000000)\\n📋 $16.00 captured · $2.00 released back to user"
+                        },
+                        {
+                            label: "Index Events",
+                            command: "cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 1 --evm-tx-hash 0xd456e789f012345678901234567890abcdef01234567890abcdef01234567890ab --evm-event-index 0 --target local-simulation",
+                            output: "📡 EVM Log Trigger: Captured event detected\\n💰 Processing Captured(user: 0x9F77..., merchant: 0x8F88..., amount: $16.00)\\n🗄️ captured-logs collection → Firestore write complete\\n📡 EVM Log Trigger: FundsReleased event detected\\n↩️ Processing FundsReleased(user: 0x9F77..., amount: $2.00)\\n🗄️ funds-released-logs collection → Firestore write complete\\n✅ Audit trail complete: On-chain events synced to Firestore"
+                        }
+                    ],
+                    appState: {
+                        currentAuth: "$0.00",
+                        balance: "$984.00",
+                        status: "Trip Complete",
+                        actionStepTitle: "End Ride — Pay $16",
+                        progress: 100
+                    }
+                }
+            ]
+        },
+        {
+            id: "stolen-device",
+            title: "Stolen Device Detection",
+            description: "Compromised device attempts fraudulent high-value authorizations that get caught by AI fraud detection — even retries are blocked",
+            merchantType: "RIDE_SHARE",
+            flowType: "rejection",
+            userWallet: "0x9F77cBDb561aaD32b403695306e3eea53F9B40e7",
+            merchantWallet: "0x8F88cBDb561aaD32b403695306e3eea53F9B50f8",
+            steps: [
+                {
+                    id: 1,
+                    title: "Fraudulent Authorization — REJECTED",
+                    description: "An attacker with a stolen device attempts to authorize $500 for a ride. The signature is valid (device has the key), but the CRE AI fraud detection catches the anomaly — $500 is 27x the user's average fare, the request comes at an unusual hour, and the location doesn't match the user's typical area. Authorization is blocked before any funds are locked.",
+                    userAction: "Attacker attempts $500 authorization from stolen device. Signature is valid but AI fraud detection flags the amount, timing, and location as highly suspicious. No funds are locked.",
+                    terminalPanes: [
+                        {
+                            label: "Sign Payload",
+                            command: "cd testing && echo '{\"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 500, \"nonce\": 1}' | node sig-gen-minimal.js",
+                            output: "🔐 Generating EIP-712 signature...\\n📝 Domain: AegisPayProtocol v1.0.0\\n✅ Signature: 0x4d5e6f7890abcdef1234567890abcdef12345678...\\n📋 Payload ready for authorize workflow"
+                        },
+                        {
+                            label: "Run Authorize",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 500, \"nonce\": 1, \"signature\": \"0x4d5e6f...\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User transaction history retrieved\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ ⚠️ ALERT: $500.00 is 27x user's average fare ($18.50)\\n  └─ ⚠️ ALERT: Unusual activity time — 3:42 AM\\n  └─ ⚠️ ALERT: Location mismatch with user's typical area\\n  └─ Risk Level: CRITICAL — Possible stolen device\\n❌ Authorization REJECTED: Fraud risk too high\\n⚡ On-chain execution blocked — no funds locked\\n📊 Fraud alert written to Firestore\\n🗄️ Account flagged for security review"
+                        }
+                    ],
+                    appState: {
+                        currentAuth: "$0.00",
+                        balance: "$1000.00",
+                        status: "Authorization Rejected",
+                        actionStepTitle: "⚠ Authorize $500",
+                        progress: 50
+                    }
+                },
+                {
+                    id: 2,
+                    title: "Retry Attempt — Still REJECTED",
+                    description: "The attacker tries again with a lower amount ($200), hoping to slip under the radar. But the account is now flagged from the previous suspicious attempt. The AI detects the rapid retry pattern and the still-anomalous amount. The account is locked and security team is notified.",
+                    userAction: "Attacker retries with $200. Account is already flagged from the first attempt. AI detects rapid retry pattern and locks the account entirely. Security team notified.",
+                    terminalPanes: [
+                        {
+                            label: "Sign Payload",
+                            command: "cd testing && echo '{\"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 200, \"nonce\": 2}' | node sig-gen-minimal.js",
+                            output: "🔐 Generating EIP-712 signature...\\n📝 Domain: AegisPayProtocol v1.0.0\\n✅ Signature: 0x5e6f7890abcdef1234567890abcdef1234567890...\\n📋 Payload ready for authorize workflow"
+                        },
+                        {
+                            label: "Run Authorize",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 200, \"nonce\": 2, \"signature\": \"0x5e6f78...\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User transaction history retrieved\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ ⚠️ ALERT: Account flagged from previous suspicious attempt\\n  └─ ⚠️ ALERT: Rapid retry — 2 attempts in 3 minutes\\n  └─ ⚠️ ALERT: $200.00 still anomalous for this user profile\\n  └─ Risk Level: CRITICAL — Account under security hold\\n❌ Authorization REJECTED: Account security hold active\\n⚡ On-chain execution blocked — no funds locked\\n📊 Second rejection logged to Firestore\\n🗄️ Security team notified — account locked"
+                        }
+                    ],
+                    appState: {
+                        currentAuth: "$0.00",
+                        balance: "$1000.00",
+                        status: "Account Locked",
+                        actionStepTitle: "⚠ Retry $200",
                         progress: 100
                     }
                 }

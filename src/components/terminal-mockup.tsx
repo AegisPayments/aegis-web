@@ -246,12 +246,23 @@ export function TerminalMockup({
                         {line}
                       </div>
                     );
-                  if (line.startsWith("  └─"))
+                  if (line.startsWith("❌"))
                     return (
-                      <div key={index} className="text-gray-400 pl-2">
+                      <div key={index} className="text-red-400 font-semibold">
                         {line}
                       </div>
                     );
+                  if (line.startsWith("  └─")) {
+                    const isWarning = line.includes("⚠️");
+                    return (
+                      <div
+                        key={index}
+                        className={`${isWarning ? "text-amber-400" : "text-gray-400"} pl-2`}
+                      >
+                        {line}
+                      </div>
+                    );
+                  }
                   return (
                     <div key={index} className="text-gray-300">
                       {line}

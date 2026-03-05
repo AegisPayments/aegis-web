@@ -106,37 +106,91 @@ export default function DemosPage() {
         {/* Scenario Selection */}
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-6">Choose Demo Scenario</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {demoConfig.scenarios.map((scenario) => (
-              <Card
-                key={scenario.id}
-                className={`cursor-pointer transition-all duration-300 ${
-                  selectedScenario.id === scenario.id
-                    ? "ring-2 ring-cyan-400 bg-cyan-500/10 border-cyan-400/30"
-                    : "aegis-glass hover:border-cyan-400/40 hover:-translate-y-1"
-                }`}
-                onClick={() => handleScenarioChange(scenario.id)}
-              >
-                <CardContent className="p-6">
-                  <h3 className="font-semibold text-white text-lg mb-2">
-                    {scenario.title}
-                  </h3>
-                  <p className="text-sm text-gray-400 mb-4 leading-relaxed">
-                    {scenario.description}
-                  </p>
-                  <Badge
-                    variant="outline"
-                    className={`text-xs ${
-                      selectedScenario.id === scenario.id
-                        ? "border-cyan-400/50 text-cyan-300"
-                        : "border-gray-600 text-gray-400"
-                    }`}
-                  >
-                    {scenario.merchantType}
-                  </Badge>
-                </CardContent>
-              </Card>
-            ))}
+
+          {/* Standard Flows */}
+          <h3 className="text-sm text-gray-400 mb-3 uppercase tracking-wider">
+            Standard Flows
+          </h3>
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {demoConfig.scenarios
+              .filter((s) => s.flowType !== "rejection")
+              .map((scenario) => (
+                <Card
+                  key={scenario.id}
+                  className={`cursor-pointer transition-all duration-300 ${
+                    selectedScenario.id === scenario.id
+                      ? "ring-2 ring-cyan-400 bg-cyan-500/10 border-cyan-400/30"
+                      : "aegis-glass hover:border-cyan-400/40 hover:-translate-y-1"
+                  }`}
+                  onClick={() => handleScenarioChange(scenario.id)}
+                >
+                  <CardContent className="p-6">
+                    <h3 className="font-semibold text-white text-lg mb-2">
+                      {scenario.title}
+                    </h3>
+                    <p className="text-sm text-gray-400 mb-4 leading-relaxed">
+                      {scenario.description}
+                    </p>
+                    <Badge
+                      variant="outline"
+                      className={`text-xs ${
+                        selectedScenario.id === scenario.id
+                          ? "border-cyan-400/50 text-cyan-300"
+                          : "border-gray-600 text-gray-400"
+                      }`}
+                    >
+                      {scenario.merchantType}
+                    </Badge>
+                  </CardContent>
+                </Card>
+              ))}
+          </div>
+
+          {/* Security / Rejection Scenarios */}
+          <h3 className="text-sm text-gray-400 mb-3 uppercase tracking-wider">
+            Security Scenarios
+          </h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            {demoConfig.scenarios
+              .filter((s) => s.flowType === "rejection")
+              .map((scenario) => (
+                <Card
+                  key={scenario.id}
+                  className={`cursor-pointer transition-all duration-300 ${
+                    selectedScenario.id === scenario.id
+                      ? "ring-2 ring-red-400 bg-red-500/10 border-red-400/30"
+                      : "aegis-glass hover:border-red-400/40 hover:-translate-y-1"
+                  }`}
+                  onClick={() => handleScenarioChange(scenario.id)}
+                >
+                  <CardContent className="p-6">
+                    <h3 className="font-semibold text-white text-lg mb-2">
+                      {scenario.title}
+                    </h3>
+                    <p className="text-sm text-gray-400 mb-4 leading-relaxed">
+                      {scenario.description}
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <Badge
+                        variant="outline"
+                        className={`text-xs ${
+                          selectedScenario.id === scenario.id
+                            ? "border-red-400/50 text-red-300"
+                            : "border-gray-600 text-gray-400"
+                        }`}
+                      >
+                        {scenario.merchantType}
+                      </Badge>
+                      <Badge
+                        variant="outline"
+                        className="text-xs border-red-500/40 text-red-400"
+                      >
+                        REJECTION FLOW
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
           </div>
         </div>
 
@@ -326,16 +380,35 @@ export default function DemosPage() {
                     <p className="text-gray-400 mb-4 leading-relaxed">
                       {currentStepData?.description}
                     </p>
-                    {currentStepData?.userAction && (
-                      <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-                        <div className="text-sm text-green-400 font-medium mb-1">
-                          User Action:
+                    {currentStepData?.userAction && (() => {
+                      const isRejectionStep =
+                        currentStepData?.appState?.status?.includes("Rejected") ||
+                        currentStepData?.appState?.status?.includes("Locked");
+                      return (
+                        <div
+                          className={`mt-4 p-3 rounded-lg ${
+                            isRejectionStep
+                              ? "bg-red-500/10 border border-red-500/20"
+                              : "bg-green-500/10 border border-green-500/20"
+                          }`}
+                        >
+                          <div
+                            className={`text-sm font-medium mb-1 ${
+                              isRejectionStep ? "text-red-400" : "text-green-400"
+                            }`}
+                          >
+                            {isRejectionStep ? "Security Event:" : "User Action:"}
+                          </div>
+                          <div
+                            className={`text-sm ${
+                              isRejectionStep ? "text-red-300" : "text-green-300"
+                            }`}
+                          >
+                            {currentStepData.userAction}
+                          </div>
                         </div>
-                        <div className="text-sm text-green-300">
-                          {currentStepData.userAction}
-                        </div>
-                      </div>
-                    )}
+                      );
+                    })()}
                   </CardContent>
                 </Card>
               )}

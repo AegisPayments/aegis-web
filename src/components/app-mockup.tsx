@@ -93,6 +93,8 @@ export function AppMockup({
     return "border-red-400";
   };
   const getStatusColor = (status: string) => {
+    if (status.includes("Rejected") || status.includes("Locked") || status.includes("Flagged"))
+      return "text-red-400";
     if (status.includes("Complete")) return "text-green-400";
     if (
       status.includes("Active") ||
