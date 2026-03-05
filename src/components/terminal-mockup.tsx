@@ -178,6 +178,17 @@ export function TerminalMockup({
                     <div className="text-center text-xs text-gray-600 mb-4">
                       Begin workflow simulation
                     </div>
+                    <>
+                      <div className="flex items-center justify-center space-x-4 mb-4">
+                        <div className="flex items-center space-x-2 text-blue-400 animate-pulse">
+                          <ChevronLeft className="w-4 h-4 opacity-60" />
+                          <span className="text-xs">
+                            Use navigation arrows or Click Action Buttons
+                          </span>
+                          <ChevronRight className="w-4 h-4 opacity-60" />
+                        </div>
+                      </div>
+                    </>
                   </>
                 ) : (
                   <>
@@ -185,7 +196,7 @@ export function TerminalMockup({
                       <div className="flex items-center space-x-2 text-blue-400 animate-pulse">
                         <ChevronLeft className="w-4 h-4 opacity-60" />
                         <span className="text-sm">
-                          Use navigation arrows or Click "Next Step"
+                          Use navigation arrows or Click Action Buttons
                         </span>
                         <ChevronRight className="w-4 h-4 opacity-60" />
                       </div>
