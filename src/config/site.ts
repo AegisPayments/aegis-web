@@ -49,7 +49,5 @@ export const siteConfig = {
     ],
     social: {
         github: "https://github.com/AegisPayments",
-        twitter: "https://twitter.com/aegispay",
-        discord: "https://discord.gg/aegispay"
     }
 }

@@ -1,12 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface TerminalMockupProps {
   command?: string;
   output?: string;
   isTyping?: boolean;
   onTypingComplete?: () => void;
+  showNavHint?: boolean;
+  isStartScreen?: boolean;
+  onStart?: () => void;
 }
 
 export function TerminalMockup({
@@ -14,6 +18,9 @@ export function TerminalMockup({
   output = "",
   isTyping = false,
   onTypingComplete,
+  showNavHint = true,
+  isStartScreen = false,
+  onStart,
 }: TerminalMockupProps) {
   const [displayedCommand, setDisplayedCommand] = useState("");
   const [displayedOutput, setDisplayedOutput] = useState("");
@@ -45,6 +52,14 @@ export function TerminalMockup({
     }
   }, [command, output, isTyping, onTypingComplete]);
 
+  // Clear displayed content when switching to start screen
+  useEffect(() => {
+    if (isStartScreen) {
+      setDisplayedCommand("");
+      setDisplayedOutput("");
+    }
+  }, [isStartScreen]);
+
   useEffect(() => {
     // Cursor blink effect
     const cursorInterval = setInterval(() => {
@@ -53,6 +68,20 @@ export function TerminalMockup({
 
     return () => clearInterval(cursorInterval);
   }, []);
+
+  // Keyboard event handling for start screen
+  useEffect(() => {
+    if (isStartScreen && onStart) {
+      const handleKeyPress = (event: KeyboardEvent) => {
+        if (event.key === "Enter") {
+          onStart();
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyPress);
+      return () => window.removeEventListener("keydown", handleKeyPress);
+    }
+  }, [isStartScreen, onStart]);
 
   return (
     <div className="bg-black rounded-lg border border-gray-800 overflow-hidden shadow-2xl">
@@ -122,21 +151,86 @@ export function TerminalMockup({
           </div>
         )}
 
-        {/* Default prompt when no command */}
-        {!displayedCommand && !isTyping && (
+        {/* Default prompt when no command or on start screen */}
+        {(!displayedCommand && !isTyping) || isStartScreen ? (
           <div className="text-gray-500">
             <div className="mb-2">
               <span className="text-green-400">$</span>
-              <span className="ml-2">Ready for simulation...</span>
+              <span className="ml-2">
+                {isStartScreen
+                  ? "Ready to begin simulation..."
+                  : "Ready for simulation..."}
+              </span>
               {showCursor && <span className="text-green-400">█</span>}
             </div>
+
+            {showNavHint && (
+              <div className="mt-6">
+                {isStartScreen ? (
+                  <>
+                    <div className="flex items-center justify-center space-x-4 mb-4">
+                      <div className="flex items-center space-x-2 text-green-400 animate-pulse">
+                        <span className="text-sm bg-green-500/20 border border-green-500/30 px-3 py-1 rounded">
+                          Press ENTER to start
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-center text-xs text-gray-600 mb-4">
+                      Begin workflow simulation
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-center space-x-4 mb-4">
+                      <div className="flex items-center space-x-2 text-blue-400 animate-pulse">
+                        <ChevronLeft className="w-4 h-4 opacity-60" />
+                        <span className="text-sm">
+                          Use navigation arrows or Click "Next Step"
+                        </span>
+                        <ChevronRight className="w-4 h-4 opacity-60" />
+                      </div>
+                    </div>
+                    <div className="text-center text-xs text-gray-600 mb-4">
+                      Navigate between steps to see CRE workflow execution
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
             <div className="text-xs mt-4 space-y-1">
-              <div>• Click "Next Step" to run CRE workflow simulation</div>
-              <div>• Watch AI risk engine evaluate payment requests</div>
-              <div>• See real-time authorization adjustments</div>
+              {isStartScreen ? (
+                <>
+                  <div className="text-cyan-400">• Demo simulation ready</div>
+                  <div className="text-blue-400">
+                    • Merchant environment configured
+                  </div>
+                  <div className="text-green-400">
+                    • Wallet connected and ready
+                  </div>
+                  <div className="text-purple-400">
+                    • CRE workflow environment initialized
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-cyan-400">
+                    • CRE workflow simulation ready
+                  </div>
+                  <div className="text-blue-400">
+                    • AI risk engine evaluation
+                  </div>
+                  <div className="text-green-400">
+                    • Real-time authorization updates
+                  </div>
+                  <div className="text-purple-400">
+                    • Smart contract state changes
+                  </div>
+                </>
+              )}
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

@@ -86,12 +86,12 @@ export function AppMockup({
             </Card>
 
             {/* Current Authorization */}
-            <Card className="bg-blue-900/20 border-blue-700 p-4 mb-6">
+            <Card className="bg-cyan-900/20 border-cyan-500/30 p-4 mb-6">
               <div className="text-center">
-                <div className="text-blue-400 text-sm mb-1">
+                <div className="text-cyan-300 text-sm mb-1">
                   Current Authorization
                 </div>
-                <div className="text-xl font-bold text-blue-400">
+                <div className="text-xl font-bold text-cyan-400">
                   {currentAuth}
                 </div>
               </div>
@@ -115,7 +115,7 @@ export function AppMockup({
             <Button
               onClick={onNextStep}
               disabled={isComplete}
-              className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-black font-medium py-3"
+              className="w-full bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-cyan-600 text-black font-medium py-3"
             >
               {isComplete ? "Demo Complete" : stepTitle}
             </Button>
