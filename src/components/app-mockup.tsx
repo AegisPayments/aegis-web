@@ -275,7 +275,7 @@ export function AppMockup({
               className="w-full bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-cyan-600 text-black font-medium py-3 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/25 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group"
             >
               <span className="relative z-10">
-                {isComplete ? "Demo Complete" : stepTitle}
+                {isComplete ? "Simulation Complete" : stepTitle}
               </span>
               {!isComplete && (
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

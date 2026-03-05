@@ -17,6 +17,7 @@ export default function DemosPage() {
   );
   const [currentStep, setCurrentStep] = useState(-1);
   const [isSimulationMode, setIsSimulationMode] = useState(true);
+  const [simulationMode, setSimulationMode] = useState("view-only"); // "view-only" | "hands-on"
   const [isTyping, setIsTyping] = useState(false);
   const simulationRef = useRef<HTMLDivElement>(null);
 
@@ -216,8 +217,8 @@ export default function DemosPage() {
                 onNextStep={handleNextStep}
                 stepTitle={
                   isComplete
-                    ? "Demo Complete"
-                    : ( currentStepData?.appState?.actionStepTitle || "Start" ) 
+                    ? "Simulation Complete"
+                    : currentStepData?.appState?.actionStepTitle || "Start"
                 }
                 isComplete={isComplete}
                 merchantType={selectedScenario.merchantType}
@@ -235,15 +236,10 @@ export default function DemosPage() {
               </div>
 
               <TerminalMockup
-                command={
+                panes={
                   currentStep === -1
                     ? undefined
-                    : currentStepData?.terminalCommand
-                }
-                output={
-                  currentStep === -1
-                    ? undefined
-                    : currentStepData?.terminalOutput
+                    : currentStepData?.terminalPanes
                 }
                 isTyping={isTyping}
                 onTypingComplete={() => setIsTyping(false)}
@@ -265,12 +261,59 @@ export default function DemosPage() {
                       workflow with real-time authorization adjustments.
                     </p>
                     <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                      <div className="text-sm text-blue-400 font-medium mb-1">
-                        Instructions:
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="text-sm text-blue-400 font-medium">
+                          Instructions:
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <span
+                            className={`text-xs ${simulationMode === "view-only" ? "text-cyan-300" : "text-gray-400"}`}
+                          >
+                            View-Only
+                          </span>
+                          <Switch
+                            checked={simulationMode === "hands-on"}
+                            onCheckedChange={(checked) =>
+                              setSimulationMode(
+                                checked ? "hands-on" : "view-only",
+                              )
+                            }
+                          />
+                          <span
+                            className={`text-xs ${simulationMode === "hands-on" ? "text-cyan-300" : "text-gray-400"}`}
+                          >
+                            Hands-On
+                          </span>
+                        </div>
                       </div>
-                      <div className="text-sm text-blue-300">
-                        Click "Start" or press Enter to begin the simulation
-                      </div>
+                      {simulationMode === "view-only" ? (
+                        <div className="text-sm text-blue-300">
+                          Click "Start" or press Enter to begin the guided
+                          simulation
+                        </div>
+                      ) : (
+                        <div className="text-sm text-blue-300 space-y-2">
+                          <div>
+                            For hands-on testing, (see{" "}
+                            <a
+                              href="/docs#deployment"
+                              target="_blank"
+                              className="font-mono bg-blue-500/20 px-1 rounded text-blue-300 underline hover:text-blue-200 transition-colors"
+                            >
+                              deployment docs
+                            </a>
+                            ) you need to:
+                          </div>
+                          <ul className="list-disc list-inside space-y-1 text-xs text-blue-300/80">
+                            <li>Deploy smart contracts</li>
+                            <li>Deposit funds into protocol</li>
+                            <li>Register as merchant</li>
+                          </ul>
+                          <div className="text-xs text-blue-400 pt-1">
+                            Switch to View mode for guided demo
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
