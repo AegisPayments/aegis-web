@@ -63,7 +63,7 @@ export function HeroSection() {
             <div className="aegis-glass rounded-2xl p-8 border-blue-500/20">
               <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-6 h-64 flex flex-col justify-center items-center relative overflow-hidden">
                 {/* Background Image */}
-                <div className="absolute inset-0 bg-[url('/unnamed.png')] bg-cover bg-center opacity-30"></div>
+                <div className="absolute inset-0 bg-[url('/hero_section_bg.png')] bg-cover bg-center opacity-30"></div>
                 {/* Dark overlay for text readability */}
                 <div className="absolute inset-0 bg-black/40"></div>
 

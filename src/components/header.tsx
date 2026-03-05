@@ -11,12 +11,12 @@ export function Header() {
   return (
     <header className="border-b aegis-border-cyber/20 bg-background/80 backdrop-blur-md sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-18">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
               <img
-                src="/AegisLogoCropped.png"
+                src="/aegis_logo.png"
                 alt="AegisPay Logo"
                 className="h-12 w-12"
               />
