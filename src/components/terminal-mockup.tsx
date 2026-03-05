@@ -46,7 +46,7 @@ export function TerminalMockup({
             onTypingComplete?.();
           }, 500);
         }
-      }, 30);
+      }, 4);
 
       return () => clearInterval(commandInterval);
     }
