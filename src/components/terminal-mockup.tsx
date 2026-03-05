@@ -212,30 +212,36 @@ export function TerminalMockup({
             <div className="text-xs mt-4 space-y-1">
               {isStartScreen ? (
                 <>
-                  <div className="text-cyan-400">• Demo simulation ready</div>
+                  <div className="text-cyan-400">
+                    • Smart Contracts should be deployed.
+                  </div>
                   <div className="text-blue-400">
-                    • Merchant environment configured
+                    • Merchant Should be Registered.
                   </div>
                   <div className="text-green-400">
-                    • Wallet connected and ready
+                    • Funds should be deposited
                   </div>
                   <div className="text-purple-400">
-                    • CRE workflow environment initialized
+                    • CRE workflow environment should be setup
+                  </div>
+                  <div className="text-yellow-200">
+                    • See below for instructions or click enter to view the
+                    simulated demo
                   </div>
                 </>
               ) : (
                 <>
                   <div className="text-cyan-400">
-                    • CRE workflow simulation ready
+                    • Smart contracts deployed and verified
                   </div>
                   <div className="text-blue-400">
-                    • AI risk engine evaluation
+                    • Merchant registration complete
                   </div>
                   <div className="text-green-400">
-                    • Real-time authorization updates
+                    • Funds deposited and available
                   </div>
                   <div className="text-purple-400">
-                    • Smart contract state changes
+                    • CRE workflow environment active
                   </div>
                 </>
               )}
