@@ -105,7 +105,7 @@ export const demoConfig: TDemoConfig = {
                         balance: "$949.50",
                         status: "Driver En Route",
                         actionStepTitle: "Driver En Route",
-                        progress: 0
+                        progress: 15
                     }
                 },
                 {

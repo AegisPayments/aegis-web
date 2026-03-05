@@ -141,3 +141,13 @@ body {
     border-color: var(--aegis-cyber-blue);
   }
 }
+
+/* Custom animations for interactive UI elements */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-12deg);
+  }
+}
