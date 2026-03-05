@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Zap, Car, Bot, Wallet } from "lucide-react";
 
 interface AppMockupProps {
   title: string;
@@ -13,6 +14,7 @@ interface AppMockupProps {
   onNextStep: () => void;
   stepTitle?: string;
   isComplete?: boolean;
+  merchantType?: string;
 }
 
 export function AppMockup({
@@ -24,6 +26,7 @@ export function AppMockup({
   onNextStep,
   stepTitle = "Next Step",
   isComplete = false,
+  merchantType = "",
 }: AppMockupProps) {
   const getStatusColor = (status: string) => {
     if (status.includes("Complete")) return "text-green-400";
@@ -40,6 +43,22 @@ export function AppMockup({
     if (progress === 100) return "bg-green-400";
     if (progress > 50) return "bg-blue-400";
     return "bg-yellow-400";
+  };
+
+  const getScenarioIcon = (merchantType: string) => {
+    const iconClass = "w-8 h-8 text-white";
+    switch (merchantType) {
+      case "EV_CHARGER":
+        return <Zap className={iconClass} />;
+      case "RIDE_SHARE":
+        // return <Navigation className={iconClass} />;
+        return <Car className={iconClass} />;
+      case "GENERIC":
+      case "RETAIL": // TODO: add an icon type parameter to demos.ts cause we don't have a merchant type as AI_AGENT. AI_AGENT is registered as Generic or Retail type.
+        return <Bot className={iconClass} />;
+      default:
+        return <Wallet className={iconClass} />;
+    }
   };
 
   return (
@@ -61,11 +80,9 @@ export function AppMockup({
           <div className="p-6 bg-gradient-to-br from-gray-900 to-black min-h-[600px]">
             {/* App Header */}
             <div className="text-center mb-8">
-              <img
-                src="/placeholder.png"
-                alt="App Icon"
-                className="w-12 h-12 mx-auto mb-3 rounded-xl"
-              />
+              <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center">
+                {getScenarioIcon(merchantType)}
+              </div>
               <h2 className="text-xl font-bold text-white mb-1">{title}</h2>
               <Badge
                 variant="secondary"

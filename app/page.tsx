@@ -11,11 +11,10 @@ export default function Home() {
       <main>
         <HeroSection />
         <FeatureGrid />
-        <VideoSection />
+        <VideoSection videoUrl="https://youtube.com/watch?v=dQw4w9WgXcQ" />
       </main>
 
       <Footer />
-
     </div>
   );
 }

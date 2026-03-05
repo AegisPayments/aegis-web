@@ -1,9 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { siteConfig } from "@/src/config/site";
 
 export function HeroSection() {
+  const scrollToVideo = () => {
+    const videoSection = document.getElementById("video-section");
+    if (videoSection) {
+      videoSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
   return (
     <section className="py-20 px-4 relative overflow-hidden">
       {/* Background Effects */}
@@ -42,6 +50,7 @@ export function HeroSection() {
             <Button
               variant="outline"
               size="lg"
+              onClick={scrollToVideo}
               className="border-blue-500/30 hover:border-blue-500/60 text-blue-400 hover:text-white bg-transparent px-8 py-6 text-lg min-w-[200px]"
             >
               <Play className="w-5 h-5 mr-2" />
@@ -49,14 +58,29 @@ export function HeroSection() {
             </Button>
           </div>
 
-          {/* Hero Image Placeholder */}
+          {/* Platform Preview */}
           <div className="relative max-w-4xl mx-auto">
             <div className="aegis-glass rounded-2xl p-8 border-blue-500/20">
-              <img
-                src="/placeholder.png"
-                alt="AegisPay Platform Demo"
-                className="w-full h-64 object-cover rounded-lg"
-              />
+              <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-6 h-64 flex flex-col justify-center items-center relative overflow-hidden">
+                {/* Background Image */}
+                <div className="absolute inset-0 bg-[url('/unnamed.png')] bg-cover bg-center opacity-30"></div>
+                {/* Dark overlay for text readability */}
+                <div className="absolute inset-0 bg-black/40"></div>
+
+                {/* Content */}
+                <div className="relative z-10 text-center">
+                  <div className="text-6xl mb-4 text-cyan-400 animate-pulse">
+                    ⚡
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-2">
+                    AegisPay Protocol
+                  </h3>
+                  <p className="text-gray-400 text-center">
+                    Real-time risk assessment • Dynamic authorization • Smart
+                    contract integration
+                  </p>
+                </div>
+              </div>
               <div className="mt-4 text-sm text-gray-500">
                 AegisPay Protocol Dashboard - AI Risk Engine in Action
               </div>

@@ -216,6 +216,7 @@ export default function DemosPage() {
                 onNextStep={handleNextStep}
                 stepTitle={isComplete ? "Demo Complete" : "Next Step"}
                 isComplete={isComplete}
+                merchantType={selectedScenario.merchantType}
               />
             </div>
             {/* Right Side - Terminal Mockup */}
