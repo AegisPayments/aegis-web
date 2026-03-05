@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AegisPay Web
+
+**The landing page, documentation, and interactive demo site for AegisPay** — a decentralized settlement layer bringing Visa-style "Auth & Capture" to Web3 smart contracts.
+
+[![Built with Chainlink CRE](https://img.shields.io/badge/Built%20with-Chainlink%20CRE-blue)](https://docs.chain.link/cre)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org)
+
+## What is AegisPay?
+
+AegisPay solves three critical failures in Web3 payments:
+
+- **No Infinite Approvals** — Users deposit once into a secure singleton ledger. Merchants get time-limited authorizations without access to your entire wallet.
+- **No Over-collateralization** — Dynamic pricing services (EV charging, ride-sharing, AI agents) work without locking excessive upfront capital.
+- **AI Risk Engine** — Chainlink CRE workflows with LLM-powered fraud detection evaluate every authorization increment in real-time.
+
+The protocol consists of two repositories:
+- **[aegispay-contracts](https://github.com/AegisPayments/aegispay-contracts)** — On-chain singleton ledger (Solidity/Foundry)
+- **[aegis-cre](https://github.com/AegisPayments/aegis-cre)** — Off-chain AI risk engine (Chainlink CRE + LLM)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+bun dev          # Start dev server
+bun run build    # Production build
+bun run lint     # ESLint
+```
 
-## Learn More
+## Pages
 
-To learn more about Next.js, take a look at the following resources:
+| Route | Description |
+|-------|-------------|
+| `/` | Marketing landing page |
+| `/demos` | Interactive protocol demos |
+| `/docs` | Full technical documentation (Smart Contracts + CRE Workflow) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Framework**: Next.js 16 App Router, React 19, TypeScript
+- **Styling**: Tailwind CSS 4, always dark mode, `aegis-gradient-bg`
+- **UI**: shadcn/ui (Radix UI primitives), lucide-react, Geist fonts
+- **Docs rendering**: react-markdown, react-syntax-highlighter, mermaid
+- **Search**: Fuse.js fuzzy search across documentation
 
-## Deploy on Vercel
+## Related Repositories
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **[AegisPay Smart Contracts](https://github.com/AegisPayments/aegispay-contracts)** — Foundry contracts, deployment scripts, and test suite
+- **[AegisPay CRE](https://github.com/AegisPayments/aegis-cre)** — Chainlink CRE workflow, LLM integration, Firebase audit logging
