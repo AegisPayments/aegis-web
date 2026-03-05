@@ -9,6 +9,7 @@ export interface DemoStep {
         currentAuth?: string;
         balance?: string;
         status?: string;
+        actionStepTitle: string;
         progress?: number;
     };
 }
@@ -23,7 +24,11 @@ export interface DemoScenario {
     steps: DemoStep[];
 }
 
-export const demoConfig = {
+type TDemoConfig = {
+    scenarios: DemoScenario[];
+}
+
+export const demoConfig: TDemoConfig = {
     scenarios: [
         {
             id: "ev-charging",
@@ -44,6 +49,7 @@ export const demoConfig = {
                         currentAuth: "$20.00",
                         balance: "$980.00",
                         status: "Charging Active",
+                        actionStepTitle: "Start Charging",
                         progress: 10
                     }
                 },
@@ -58,6 +64,7 @@ export const demoConfig = {
                         currentAuth: "$35.00",
                         balance: "$965.00",
                         status: "Charging Active",
+                        actionStepTitle: "Charging Adjustment Approved",
                         progress: 60
                     }
                 },
@@ -72,6 +79,7 @@ export const demoConfig = {
                         currentAuth: "$0.00",
                         balance: "$967.50",
                         status: "Session Complete",
+                        actionStepTitle: "Session Complete",
                         progress: 100
                     }
                 }
@@ -96,6 +104,7 @@ export const demoConfig = {
                         currentAuth: "$18.00",
                         balance: "$949.50",
                         status: "Driver En Route",
+                        actionStepTitle: "Driver En Route",
                         progress: 0
                     }
                 },
@@ -110,6 +119,7 @@ export const demoConfig = {
                         currentAuth: "$24.00",
                         balance: "$943.50",
                         status: "In Transit",
+                        actionStepTitle: "Fare Adjustment Approved",
                         progress: 70
                     }
                 },
@@ -124,6 +134,7 @@ export const demoConfig = {
                         currentAuth: "$0.00",
                         balance: "$944.00",
                         status: "Trip Complete",
+                        actionStepTitle: "Trip Complete",
                         progress: 100
                     }
                 }
@@ -148,6 +159,7 @@ export const demoConfig = {
                         currentAuth: "$5.00",
                         balance: "$939.00",
                         status: "Processing Data",
+                        actionStepTitle: "Processing Data",
                         progress: 20
                     }
                 },
@@ -162,6 +174,7 @@ export const demoConfig = {
                         currentAuth: "$8.00",
                         balance: "$936.00",
                         status: "High Compute Mode",
+                        actionStepTitle: "Compute Scaling Approved",
                         progress: 85
                     }
                 },
@@ -176,6 +189,7 @@ export const demoConfig = {
                         currentAuth: "$0.00",
                         balance: "$936.75",
                         status: "Task Complete",
+                        actionStepTitle: "Task Complete",
                         progress: 100
                     }
                 }

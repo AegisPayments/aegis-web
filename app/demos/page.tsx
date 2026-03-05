@@ -214,7 +214,11 @@ export default function DemosPage() {
                 status={currentStepData?.appState?.status || "Ready"}
                 progress={currentStepData?.appState?.progress || 0}
                 onNextStep={handleNextStep}
-                stepTitle={isComplete ? "Demo Complete" : "Next Step"}
+                stepTitle={
+                  isComplete
+                    ? "Demo Complete"
+                    : ( currentStepData?.appState?.actionStepTitle || "Start" ) 
+                }
                 isComplete={isComplete}
                 merchantType={selectedScenario.merchantType}
               />
@@ -265,7 +269,7 @@ export default function DemosPage() {
                         Instructions:
                       </div>
                       <div className="text-sm text-blue-300">
-                        Click "Next Step" or press Enter to begin the simulation
+                        Click "Start" or press Enter to begin the simulation
                       </div>
                     </div>
                   </CardContent>
