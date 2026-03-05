@@ -30,18 +30,26 @@ export function AppMockup({
   merchantType = "",
 }: AppMockupProps) {
   // Live interactive states
+  const [mounted, setMounted] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [batteryLevel, setBatteryLevel] = useState(87);
   const [signalBars, setSignalBars] = useState(4);
   const [networkActive, setNetworkActive] = useState(false);
 
-  // Update clock every second
+  // Handle client-side hydration
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Update clock every second (only after mounting)
+  useEffect(() => {
+    if (!mounted) return;
+
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [mounted]);
 
   // Simulate battery drain and signal changes
   useEffect(() => {
@@ -72,14 +80,16 @@ export function AppMockup({
   }, []);
 
   const getBatteryColor = () => {
-    if (batteryLevel > 50) return "bg-green-400";
-    if (batteryLevel > 20) return "bg-yellow-400";
+    const level = mounted ? batteryLevel : 87;
+    if (level > 50) return "bg-green-400";
+    if (level > 20) return "bg-yellow-400";
     return "bg-red-400";
   };
 
   const getBatteryBorderColor = () => {
-    if (batteryLevel > 50) return "border-green-400";
-    if (batteryLevel > 20) return "border-yellow-400";
+    const level = mounted ? batteryLevel : 87;
+    if (level > 50) return "border-green-400";
+    if (level > 20) return "border-yellow-400";
     return "border-red-400";
   };
   const getStatusColor = (status: string) => {
@@ -123,10 +133,14 @@ export function AppMockup({
           {/* Phone Status Bar */}
           <div className="bg-black px-6 py-2 flex justify-between items-center text-white text-xs">
             <span className="font-medium">
-              {currentTime.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
+              {
+                mounted
+                  ? currentTime.toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : "12:00" // Static fallback during server render
+              }
             </span>
             <div className="flex items-center space-x-2">
               {/* Network Activity Indicator */}
@@ -135,8 +149,8 @@ export function AppMockup({
                   <div
                     key={i}
                     className={`w-1 rounded-full transition-all duration-300 ${
-                      i < signalBars
-                        ? networkActive
+                      i < (mounted ? signalBars : 4)
+                        ? mounted && networkActive
                           ? "bg-cyan-400 shadow-cyan-400/50 shadow-sm"
                           : "bg-white"
                         : "bg-gray-600"
@@ -149,7 +163,7 @@ export function AppMockup({
               {/* WiFi Icon */}
               <Wifi
                 className={`w-3 h-3 transition-colors duration-300 ${
-                  networkActive ? "text-cyan-400" : "text-white"
+                  mounted && networkActive ? "text-cyan-400" : "text-white"
                 }`}
               />
 
@@ -159,12 +173,16 @@ export function AppMockup({
               >
                 <div
                   className={`h-full rounded-sm transition-all duration-1000 ${getBatteryColor()}`}
-                  style={{ width: `${Math.max(batteryLevel, 5)}%` }}
+                  style={{
+                    width: `${Math.max(mounted ? batteryLevel : 87, 5)}%`,
+                  }}
                 />
                 {/* Battery tip */}
                 <div
                   className={`absolute w-[2px] h-2 rounded-r-sm ml-6 -mt-[9px] transition-colors duration-300 ${
-                    batteryLevel > 20 ? "bg-white" : getBatteryColor()
+                    (mounted ? batteryLevel : 87) > 20
+                      ? "bg-white"
+                      : getBatteryColor()
                   }`}
                 />
               </div>
@@ -172,10 +190,12 @@ export function AppMockup({
               {/* Battery percentage */}
               <span
                 className={`text-[10px] transition-colors duration-300 ${
-                  batteryLevel > 20 ? "text-white" : "text-red-400"
+                  (mounted ? batteryLevel : 87) > 20
+                    ? "text-white"
+                    : "text-red-400"
                 }`}
               >
-                {Math.round(batteryLevel)}%
+                {Math.round(mounted ? batteryLevel : 87)}%
               </span>
             </div>
           </div>
