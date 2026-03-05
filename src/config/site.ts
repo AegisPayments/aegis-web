@@ -12,7 +12,8 @@ export const siteConfig = {
     navigation: {
         main: [
             { name: "Demos", href: "/demos" },
-            { name: "Documentation", href: "#docs" },
+            { name: "Transactions", href: "/transactions" },
+            { name: "Documentation", href: "/docs" },
             { name: "GitHub", href: "https://github.com/AegisPayments" }
         ]
     },
