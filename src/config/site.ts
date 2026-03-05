@@ -14,7 +14,7 @@ export const siteConfig = {
             { name: "Demos", href: "/demos" },
             { name: "Transactions", href: "/transactions" },
             { name: "Documentation", href: "/docs" },
-            { name: "GitHub", href: "https://github.com/AegisPayments" }
+            { name: "GitHub", href: "https://github.com/AegisPayments", target: "_blank" }
         ]
     },
     features: [

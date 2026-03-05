@@ -32,6 +32,7 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
+                target={item.target || "_self"}
                 className="text-gray-300 hover:text-white transition-colors duration-200"
               >
                 {item.name}
