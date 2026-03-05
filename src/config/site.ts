@@ -20,17 +20,17 @@ export const siteConfig = {
     features: [
         {
             title: "No Infinite Approvals",
-            description: "Users deposit funds once into a secure singleton ledger. Merchants get time-limited authorizations without access to your entire wallet.",
+            description: "Users deposit funds once into a secure singleton ledger. Merchants get time-limited authorizations for specific amounts without dangerous wallet access.",
             icon: "shield"
         },
         {
-            title: "No Over-collateralization",
-            description: "Dynamic pricing services like ride-sharing and EV charging work seamlessly without locking excessive upfront capital.",
+            title: "Zero-Friction Dynamic Pricing",
+            description: "Dynamic services like ride-sharing and EV charging increment authorizations smoothly without over-collateralization or strict one time approvals.",
             icon: "zap"
         },
         {
             title: "AI Risk Engine",
-            description: "Chainlink CRE workflows with LLM-powered fraud detection evaluate every authorization increment in real-time.",
+            description: "Advanced Chainlink CRE workflows with LLM-powered fraud detection analyze every authorization increment to prevent abuse in real-time.",
             icon: "brain"
         }
     ],
