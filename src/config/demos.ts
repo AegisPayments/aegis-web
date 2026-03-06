@@ -77,7 +77,7 @@ export const demoConfig: TDemoConfig = {
                     terminalPanes: [
                         {
                             label: "Secure Increment",
-                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"secureIncrement\", \"merchantType\": \"EV_CHARGER\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"currentAuth\": 20, \"requestedTotal\": 35, \"reason\": \"Slower charging speed — battery requires additional time\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"secureIncrement\", \"merchantType\": \"EV_CHARGER\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"currentAuth\": 20, \"requestedTotal\": 35, \"reason\": \"Slower charging speed — battery requires additional time\", \"authorizationLogId\": \"1772076522483_62266d\"}' --target local-simulation --non-interactive --trigger-index 0",
                             output: "🔄 Secure increment workflow triggered\\n🗄️ Firebase context: Previous EV charging patterns analyzed\\n🤖 Aegis AI Risk Engine:\\n  └─ Merchant Type: EV_CHARGER (50–200% variance allowed)\\n  └─ Request: $20.00 → $35.00 (+75%)\\n  └─ User History: Consistent EV charging behavior\\n  └─ Fraud Indicators: None detected\\n✅ INCREMENT APPROVED: $35.00 total authorization\\n⚡ secureIncrement() executed via Chainlink Forwarder\\n📊 Updated authorization logged to Firestore"
                         }
                     ],
@@ -102,7 +102,7 @@ export const demoConfig: TDemoConfig = {
                         },
                         {
                             label: "Index Events",
-                            command: "cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 1 --evm-tx-hash 0xb356c6344b026a3ee5893baced116219beb3bdfab7a6becffe1269d59161558e --evm-event-index 0 --target local-simulation",
+                            command: "cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 1 --evm-tx-hash 0xb356c6344b026a3ee5893baced116219beb3bdfab7a6becffe1269d59161558e --evm-event-index 1 --target local-simulation && cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 2 --evm-tx-hash 0xb356c6344b026a3ee5893baced116219beb3bdfab7a6becffe1269d59161558e --evm-event-index 0 --target local-simulation",
                             output: "📡 EVM Log Trigger: Captured event detected\\n💰 Processing Captured(user: 0x9F77..., merchant: 0x742d..., amount: $32.50)\\n🗄️ captured-logs collection → Firestore write complete\\n📡 EVM Log Trigger: FundsReleased event detected\\n↩️ Processing FundsReleased(user: 0x9F77..., amount: $2.50)\\n🗄️ funds-released-logs collection → Firestore write complete\\n✅ Audit trail complete: On-chain events synced to Firestore"
                         }
                     ],
@@ -157,7 +157,7 @@ export const demoConfig: TDemoConfig = {
                     terminalPanes: [
                         {
                             label: "Secure Increment",
-                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"secureIncrement\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"currentAuth\": 18, \"requestedTotal\": 30, \"reason\": \"Major traffic on I-95 — alternate route adds 12 miles\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"secureIncrement\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"currentAuth\": 18, \"requestedTotal\": 30, \"reason\": \"Major traffic on I-95 — alternate route adds 12 miles\", \"authorizationLogId\": \"1772076522483_62266d\"}' --target local-simulation --non-interactive --trigger-index 0",
                             output: "🔄 Secure increment workflow triggered\\n🗄️ Firebase context: Previous ride patterns analyzed\\n🤖 Aegis AI Risk Engine:\\n  └─ Merchant Type: RIDE_SHARE (up to 50% variance allowed)\\n  └─ Request: $18.00 → $30.00 (+67% — within limits)\\n  └─ User History: Accepts traffic-based adjustments\\n  └─ Fraud Indicators: None detected\\n✅ INCREMENT APPROVED: $30.00 total authorization\\n⚡ secureIncrement() executed via Chainlink Forwarder\\n📊 Updated authorization logged to Firestore"
                         }
                     ],
@@ -182,7 +182,7 @@ export const demoConfig: TDemoConfig = {
                         },
                         {
                             label: "Index Events",
-                            command: "cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 1 --evm-tx-hash 0xf247d1c4567b8e3c4f8b9e4d5c6a7b8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5 --evm-event-index 0 --target local-simulation",
+                            command: "cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 1 --evm-tx-hash 0xf247d1c4567b8e3c4f8b9e4d5c6a7b8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5 --evm-event-index 1 --target local-simulation && cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 2 --evm-tx-hash 0xf247d1c4567b8e3c4f8b9e4d5c6a7b8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5 --evm-event-index 0 --target local-simulation",
                             output: "📡 EVM Log Trigger: Captured event detected\\n💰 Processing Captured(user: 0x9F77..., merchant: 0x8F88..., amount: $26.00)\\n🗄️ captured-logs collection → Firestore write complete\\n📡 EVM Log Trigger: FundsReleased event detected\\n↩️ Processing FundsReleased(user: 0x9F77..., amount: $4.00)\\n🗄️ funds-released-logs collection → Firestore write complete\\n✅ Audit trail complete: On-chain events synced to Firestore"
                         }
                     ],
@@ -237,7 +237,7 @@ export const demoConfig: TDemoConfig = {
                     terminalPanes: [
                         {
                             label: "Secure Increment",
-                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"secureIncrement\", \"merchantType\": \"GENERIC\", \"user\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"merchant\": \"0x7G99dBDb561aaD32b403695306e3eea53F9C61g9\", \"currentAuth\": 5, \"requestedTotal\": 8, \"reason\": \"Additional GPU compute required for complex analysis\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"secureIncrement\", \"merchantType\": \"GENERIC\", \"user\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"merchant\": \"0x7G99dBDb561aaD32b403695306e3eea53F9C61g9\", \"currentAuth\": 5, \"requestedTotal\": 8, \"reason\": \"Additional GPU compute required for complex analysis\", \"authorizationLogId\": \"1772076522483_62266d\"}' --target local-simulation --non-interactive --trigger-index 0",
                             output: "🔄 Secure increment workflow triggered\\n🗄️ Firebase context: Previous agent usage patterns analyzed\\n🤖 Aegis AI Risk Engine:\\n  └─ Merchant Type: GENERIC (low variance threshold)\\n  └─ Request: $5.00 → $8.00 (+60% — within limits)\\n  └─ User History: Consistent compute scaling behavior\\n  └─ Fraud Indicators: None detected\\n✅ INCREMENT APPROVED: $8.00 total authorization\\n⚡ secureIncrement() executed via Chainlink Forwarder\\n📊 Updated authorization logged to Firestore"
                         }
                     ],
@@ -262,7 +262,7 @@ export const demoConfig: TDemoConfig = {
                         },
                         {
                             label: "Index Events",
-                            command: "cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 1 --evm-tx-hash 0xa1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90 --evm-event-index 0 --target local-simulation",
+                            command: "cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 1 --evm-tx-hash 0xa1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90 --evm-event-index 1 --target local-simulation && cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 2 --evm-tx-hash 0xa1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90 --evm-event-index 0 --target local-simulation",
                             output: "📡 EVM Log Trigger: Captured event detected\\n💰 Processing Captured(user: 0x742d..., merchant: 0x7G99..., amount: $7.25)\\n🗄️ captured-logs collection → Firestore write complete\\n📡 EVM Log Trigger: FundsReleased event detected\\n↩️ Processing FundsReleased(user: 0x742d..., amount: $0.75)\\n🗄️ funds-released-logs collection → Firestore write complete\\n✅ Audit trail complete: On-chain events synced to Firestore"
                         }
                     ],
@@ -318,7 +318,7 @@ export const demoConfig: TDemoConfig = {
                     terminalPanes: [
                         {
                             label: "Secure Increment",
-                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"secureIncrement\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"currentAuth\": 18, \"requestedTotal\": 95, \"reason\": \"Extended premium route requested\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"secureIncrement\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"currentAuth\": 18, \"requestedTotal\": 95, \"reason\": \"Extended premium route requested\", \"authorizationLogId\": \"1772076522483_62266d\"}' --target local-simulation --non-interactive --trigger-index 0",
                             output: "🔄 Secure increment workflow triggered\\n🗄️ Firebase context: Previous ride patterns analyzed\\n🤖 Aegis AI Risk Engine:\\n  └─ Merchant Type: RIDE_SHARE (up to 50% variance allowed)\\n  └─ Request: $18.00 → $95.00 (+428%)\\n  └─ ⚠️ VARIANCE EXCEEDED: 428% far exceeds 50% limit\\n  └─ ⚠️ Amount $95.00 is 5x user's average fare\\n  └─ Risk Level: HIGH — Potential merchant fraud\\n❌ INCREMENT REJECTED: Exceeds risk threshold\\n⚡ On-chain execution blocked — authorization unchanged\\n📊 Rejection logged to Firestore risk-assessments"
                         }
                     ],
@@ -343,7 +343,7 @@ export const demoConfig: TDemoConfig = {
                         },
                         {
                             label: "Index Events",
-                            command: "cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 1 --evm-tx-hash 0xd456e789f012345678901234567890abcdef01234567890abcdef01234567890ab --evm-event-index 0 --target local-simulation",
+                            command: "cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 1 --evm-tx-hash 0xd456e789f012345678901234567890abcdef01234567890abcdef01234567890ab --evm-event-index 1 --target local-simulation && cre workflow simulate ./aegis-workflow --non-interactive --trigger-index 2 --evm-tx-hash 0xd456e789f012345678901234567890abcdef01234567890abcdef01234567890ab --evm-event-index 0 --target local-simulation",
                             output: "📡 EVM Log Trigger: Captured event detected\\n💰 Processing Captured(user: 0x9F77..., merchant: 0x8F88..., amount: $16.00)\\n🗄️ captured-logs collection → Firestore write complete\\n📡 EVM Log Trigger: FundsReleased event detected\\n↩️ Processing FundsReleased(user: 0x9F77..., amount: $2.00)\\n🗄️ funds-released-logs collection → Firestore write complete\\n✅ Audit trail complete: On-chain events synced to Firestore"
                         }
                     ],

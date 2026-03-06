@@ -47,9 +47,12 @@ export interface FirestoreAuthorizeLogData {
   fields: {
     userAddress: { stringValue: string };
     merchantAddress: { stringValue: string };
+    merchantType: { stringValue: string };
     amount: { integerValue: number };
     nonce: { integerValue: number };
     signature: { stringValue: string };
+    fraudDecision: { stringValue: string };
+    fraudConfidence: { integerValue: number };
     txHash: { stringValue: string };
     functionName: { stringValue: string };
     createdAt: { integerValue: number };
@@ -101,9 +104,12 @@ interface AuthorizeLog {
   id: string;
   userAddress: string;
   merchantAddress: string;
+  merchantType: string;
   amount: number;
   nonce: number;
   signature: string;
+  fraudDecision: string;
+  fraudConfidence: number;
   txHash: string;
   functionName: string;
   createdAt: number;
@@ -224,9 +230,12 @@ export default function TransactionsPage() {
         id,
         userAddress: fields.userAddress?.stringValue || "",
         merchantAddress: fields.merchantAddress?.stringValue || "",
+        merchantType: fields.merchantType?.stringValue || "",
         amount: fields.amount?.integerValue || 0,
         nonce: fields.nonce?.integerValue || 0,
         signature: fields.signature?.stringValue || "",
+        fraudDecision: fields.fraudDecision?.stringValue || "",
+        fraudConfidence: fields.fraudConfidence?.integerValue || 0,
         txHash: fields.txHash?.stringValue || "",
         functionName: fields.functionName?.stringValue || "",
         createdAt: fields.createdAt?.integerValue || 0,
@@ -407,7 +416,7 @@ export default function TransactionsPage() {
       },
       "authorization-logs": {
         data: authLogs,
-        fields: ["userAddress", "merchantAddress", "functionName", "txHash"],
+        fields: ["userAddress", "merchantAddress", "merchantType", "functionName", "fraudDecision", "txHash"],
       },
       "captured-logs": {
         data: capturedLogs,
@@ -454,7 +463,9 @@ export default function TransactionsPage() {
   const filteredAuthLogs = filterData(authLogs, [
     "userAddress",
     "merchantAddress",
+    "merchantType",
     "functionName",
+    "fraudDecision",
     "txHash",
   ]);
   const filteredCapturedLogs = filterData(capturedLogs, [
@@ -794,9 +805,16 @@ export default function TransactionsPage() {
                         <th className="text-left p-3 text-gray-400">
                           Merchant
                         </th>
+                        <th className="text-left p-3 text-gray-400">Type</th>
                         <th className="text-left p-3 text-gray-400">Amount</th>
                         <th className="text-left p-3 text-gray-400">
                           Function
+                        </th>
+                        <th className="text-left p-3 text-gray-400">
+                          Fraud Decision
+                        </th>
+                        <th className="text-left p-3 text-gray-400">
+                          Confidence
                         </th>
                         <th className="text-left p-3 text-gray-400">Nonce</th>
                         <th className="text-left p-3 text-gray-400">Tx Hash</th>
@@ -827,11 +845,29 @@ export default function TransactionsPage() {
                               />
                             </div>
                           </td>
+                          <td className="p-3">
+                            <Badge variant="outline" className="text-xs">
+                              {log.merchantType}
+                            </Badge>
+                          </td>
                           <td className="p-3 text-yellow-400">
                             {formatAmount(log.amount)} ETH
                           </td>
                           <td className="p-3">
                             <Badge variant="outline">{log.functionName}</Badge>
+                          </td>
+                          <td className="p-3">
+                            <div className="flex items-center gap-2">
+                              {getRiskIcon(log.fraudDecision)}
+                              <Badge
+                                variant={getRiskBadgeVariant(log.fraudDecision)}
+                              >
+                                {log.fraudDecision}
+                              </Badge>
+                            </div>
+                          </td>
+                          <td className="p-3 text-purple-400">
+                            {log.fraudConfidence}%
                           </td>
                           <td className="p-3 text-purple-400">{log.nonce}</td>
                           <td className="p-3">
@@ -855,7 +891,7 @@ export default function TransactionsPage() {
                       {filteredAuthLogs.length === 0 && (
                         <tr>
                           <td
-                            colSpan={7}
+                            colSpan={10}
                             className="text-center p-8 text-gray-500"
                           >
                             {searchTerm
