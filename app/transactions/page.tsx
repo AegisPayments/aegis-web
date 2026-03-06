@@ -323,7 +323,8 @@ export default function TransactionsPage() {
   }, []);
 
   const formatAmount = (amount: number) => {
-    return (amount / 1e18).toFixed(6); // Assuming 18 decimal places
+    // return (amount / 1e18).toFixed(6); // Assuming 18 decimal places
+    return amount // Let's just pretent this is USD for now. this is actually decimals of USDC
   };
 
   const formatTimestamp = (timestamp: number | string) => {
@@ -755,7 +756,7 @@ export default function TransactionsPage() {
                             </Badge>
                           </td>
                           <td className="p-3 text-yellow-400">
-                            {formatAmount(log.requestedTotal)} ETH
+                            {formatAmount(log.requestedTotal)} USD
                           </td>
                           <td className="p-3">
                             <div className="flex items-center gap-2">
@@ -896,7 +897,7 @@ export default function TransactionsPage() {
                             </Badge>
                           </td>
                           <td className="p-3 text-yellow-400">
-                            {formatAmount(log.amount)} ETH
+                            {formatAmount(log.amount)} USD
                           </td>
                           <td className="p-3">
                             <Badge variant="outline">{log.functionName}</Badge>
@@ -987,9 +988,6 @@ export default function TransactionsPage() {
                         <th className="text-left p-3 text-gray-400">Amount</th>
                         <th className="text-left p-3 text-gray-400">Block</th>
                         <th className="text-left p-3 text-gray-400">Tx Hash</th>
-                        <th className="text-left p-3 text-gray-400">
-                          Log Index
-                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1026,7 +1024,7 @@ export default function TransactionsPage() {
                             </div>
                           </td>
                           <td className="p-3 text-yellow-400">
-                            {formatAmount(log.amount)} ETH
+                            {formatAmount(log.amount)} USD
                           </td>
                           <td className="p-3 text-purple-400">
                             {log.blockNumber}
@@ -1047,13 +1045,12 @@ export default function TransactionsPage() {
                               </a>
                             </div>
                           </td>
-                          <td className="p-3 text-gray-300">{log.logIndex}</td>
                         </tr>
                       ))}
                       {filteredCapturedLogs.length === 0 && (
                         <tr>
                           <td
-                            colSpan={8}
+                            colSpan={7}
                             className="text-center p-8 text-gray-500"
                           >
                             {searchTerm
@@ -1104,9 +1101,6 @@ export default function TransactionsPage() {
                         <th className="text-left p-3 text-gray-400">Amount</th>
                         <th className="text-left p-3 text-gray-400">Block</th>
                         <th className="text-left p-3 text-gray-400">Tx Hash</th>
-                        <th className="text-left p-3 text-gray-400">
-                          Log Index
-                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1143,7 +1137,7 @@ export default function TransactionsPage() {
                             </div>
                           </td>
                           <td className="p-3 text-yellow-400">
-                            {formatAmount(log.amount)} ETH
+                            {formatAmount(log.amount)} USD
                           </td>
                           <td className="p-3 text-purple-400">
                             {log.blockNumber}
@@ -1164,13 +1158,12 @@ export default function TransactionsPage() {
                               </a>
                             </div>
                           </td>
-                          <td className="p-3 text-gray-300">{log.logIndex}</td>
                         </tr>
                       ))}
                       {filteredReleasedLogs.length === 0 && (
                         <tr>
                           <td
-                            colSpan={8}
+                            colSpan={7}
                             className="text-center p-8 text-gray-500"
                           >
                             {searchTerm
