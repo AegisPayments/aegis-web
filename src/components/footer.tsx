@@ -7,7 +7,7 @@ export function Footer() {
             Ready to Experience the Future of Web3 Payments?
           </h3>
           <p className="text-gray-400 mb-6">
-            Join the simulation and see how AegisPay transforms dynamic pricing
+            Join the waitlist and see how AegisPay transforms dynamic pricing
             for real-world services.
           </p>
         </div>

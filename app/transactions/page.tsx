@@ -622,18 +622,18 @@ export default function TransactionsPage() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid grid-cols-4 w-full bg-gray-900/50 border border-gray-800 rounded-lg p-1">
             <TabsTrigger
-              value="risk-logs"
-              className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-black"
-            >
-              <Shield className="w-4 h-4" />
-              Risk Analysis
-            </TabsTrigger>
-            <TabsTrigger
               value="authorization-logs"
               className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-black"
             >
               <Zap className="w-4 h-4" />
               Authorizations
+            </TabsTrigger>
+            <TabsTrigger
+              value="risk-logs"
+              className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-black"
+            >
+              <Shield className="w-4 h-4" />
+              Risk Analysis
             </TabsTrigger>
             <TabsTrigger
               value="captured-logs"
