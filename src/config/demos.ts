@@ -52,12 +52,12 @@ export const demoConfig: TDemoConfig = {
                     terminalPanes: [
                         {
                             label: "Sign Payload",
-                            command: "cd testing && echo '{\"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"amount\": 20, \"nonce\": 1}' | node sig-gen-minimal.js",
+                            command: "cd testing && echo '{\"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"amount\": 20, \"nonce\": 0}' | node sig-gen-minimal.js",
                             output: "🔐 Generating EIP-712 signature...\\n📝 Domain: AegisPayProtocol v1.0.0\\n✅ Signature: 0x1a2b3c4d5e6f7890abcdef1234567890abcdef12...\\n📋 Payload ready for authorize workflow"
                         },
                         {
                             label: "Run Authorize",
-                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"EV_CHARGER\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"amount\": 20, \"nonce\": 1, \"signature\": \"0x1a2b3c4d...\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"EV_CHARGER\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"amount\": 20, \"nonce\": 0, \"signature\": \"0x1a2b3c4d...\"}' --target local-simulation --non-interactive --trigger-index 0",
                             output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User transaction history retrieved\\n🤖 LLM Fraud Detection: Analyzing EV_CHARGER pattern\\n  └─ Risk Level: LOW — Established user pattern\\n  └─ Amount $20.00 within normal EV charging range\\n  └─ Fraud Indicators: None detected\\n✅ Authorization APPROVED: $20.00\\n⚡ authorize() executed via Chainlink Forwarder\\n📊 Authorization log written to Firestore"
                         }
                     ],
@@ -132,12 +132,12 @@ export const demoConfig: TDemoConfig = {
                     terminalPanes: [
                         {
                             label: "Sign Payload",
-                            command: "cd testing && echo '{\"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 1}' | node sig-gen-minimal.js",
+                            command: "cd testing && echo '{\"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 0}' | node sig-gen-minimal.js",
                             output: "🔐 Generating EIP-712 signature...\\n📝 Domain: AegisPayProtocol v1.0.0\\n✅ Signature: 0x2b3c4d5e6f7890abcdef1234567890abcdef12...\\n📋 Payload ready for authorize workflow"
                         },
                         {
                             label: "Run Authorize",
-                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 1, \"signature\": \"0x2b3c4d...\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 0, \"signature\": \"0x2b3c4d...\"}' --target local-simulation --non-interactive --trigger-index 0",
                             output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User ride history — 15 previous trips\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ Risk Level: LOW — Established ride-share user\\n  └─ Amount $18.00 within normal fare range\\n  └─ Fraud Indicators: None detected\\n✅ Authorization APPROVED: $18.00\\n⚡ authorize() executed via Chainlink Forwarder\\n📊 Authorization log written to Firestore"
                         }
                     ],
@@ -212,12 +212,12 @@ export const demoConfig: TDemoConfig = {
                     terminalPanes: [
                         {
                             label: "Sign Payload",
-                            command: "cd testing && echo '{\"user\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"merchant\": \"0x7G99dBDb561aaD32b403695306e3eea53F9C61g9\", \"amount\": 5, \"nonce\": 1}' | node sig-gen-minimal.js",
+                            command: "cd testing && echo '{\"user\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"merchant\": \"0x7G99dBDb561aaD32b403695306e3eea53F9C61g9\", \"amount\": 5, \"nonce\": 0}' | node sig-gen-minimal.js",
                             output: "🔐 Generating EIP-712 signature...\\n📝 Domain: AegisPayProtocol v1.0.0\\n✅ Signature: 0x9abc3c4d5e6f7890abcdef1234567890abcdef12...\\n📋 Payload ready for authorize workflow"
                         },
                         {
                             label: "Run Authorize",
-                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"GENERIC\", \"user\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"merchant\": \"0x7G99dBDb561aaD32b403695306e3eea53F9C61g9\", \"amount\": 5, \"nonce\": 1, \"signature\": \"0x9abc3c4d...\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"GENERIC\", \"user\": \"0x742d35Cc6B4c6534F7c9b156dfDD3B29A5c9E0a4\", \"merchant\": \"0x7G99dBDb561aaD32b403695306e3eea53F9C61g9\", \"amount\": 5, \"nonce\": 0, \"signature\": \"0x9abc3c4d...\"}' --target local-simulation --non-interactive --trigger-index 0",
                             output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: Agent usage history retrieved\\n🤖 LLM Fraud Detection: Analyzing GENERIC pattern\\n  └─ Risk Level: LOW — Established agent usage pattern\\n  └─ Amount $5.00 within normal compute range\\n  └─ Fraud Indicators: None detected\\n✅ Authorization APPROVED: $5.00\\n⚡ authorize() executed via Chainlink Forwarder\\n📊 Authorization log written to Firestore"
                         }
                     ],
@@ -293,12 +293,12 @@ export const demoConfig: TDemoConfig = {
                     terminalPanes: [
                         {
                             label: "Sign Payload",
-                            command: "cd testing && echo '{\"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 1}' | node sig-gen-minimal.js",
+                            command: "cd testing && echo '{\"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 0}' | node sig-gen-minimal.js",
                             output: "🔐 Generating EIP-712 signature...\\n📝 Domain: AegisPayProtocol v1.0.0\\n✅ Signature: 0x2b3c4d5e6f7890abcdef1234567890abcdef12...\\n📋 Payload ready for authorize workflow"
                         },
                         {
                             label: "Run Authorize",
-                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 1, \"signature\": \"0x2b3c4d...\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 0, \"signature\": \"0x2b3c4d...\"}' --target local-simulation --non-interactive --trigger-index 0",
                             output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User ride history — 15 previous trips\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ Risk Level: LOW — Established ride-share user\\n  └─ Amount $18.00 within normal fare range\\n  └─ Fraud Indicators: None detected\\n✅ Authorization APPROVED: $18.00\\n⚡ authorize() executed via Chainlink Forwarder\\n📊 Authorization log written to Firestore"
                         }
                     ],
@@ -374,12 +374,12 @@ export const demoConfig: TDemoConfig = {
                     terminalPanes: [
                         {
                             label: "Sign Payload",
-                            command: "cd testing && echo '{\"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 500, \"nonce\": 1}' | node sig-gen-minimal.js",
+                            command: "cd testing && echo '{\"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 500, \"nonce\": 0}' | node sig-gen-minimal.js",
                             output: "🔐 Generating EIP-712 signature...\\n📝 Domain: AegisPayProtocol v1.0.0\\n✅ Signature: 0x4d5e6f7890abcdef1234567890abcdef12345678...\\n📋 Payload ready for authorize workflow"
                         },
                         {
                             label: "Run Authorize",
-                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 500, \"nonce\": 1, \"signature\": \"0x4d5e6f...\"}' --target local-simulation --non-interactive --trigger-index 0",
+                            command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 500, \"nonce\": 0, \"signature\": \"0x4d5e6f...\"}' --target local-simulation --non-interactive --trigger-index 0",
                             output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User transaction history retrieved\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ ⚠️ ALERT: $500.00 is 27x user's average fare ($18.50)\\n  └─ ⚠️ ALERT: Unusual activity time — 3:42 AM\\n  └─ ⚠️ ALERT: Mismatch with user's typical transaction pattern\\n  └─ Risk Level: CRITICAL — Possible stolen device\\n❌ Authorization REJECTED: Fraud risk too high\\n⚡ On-chain execution blocked — no funds locked\\n📊 Fraud alert written to Firestore\\n🗄️ Account flagged for security review"
                         }
                     ],
