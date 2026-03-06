@@ -688,6 +688,7 @@ export default function TransactionsPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-gray-800">
+                        <th className="text-left p-3 text-gray-400">Doc ID</th>
                         <th className="text-left p-3 text-gray-400">Time</th>
                         <th className="text-left p-3 text-gray-400">User</th>
                         <th className="text-left p-3 text-gray-400">
@@ -710,6 +711,14 @@ export default function TransactionsPage() {
                           key={log.id}
                           className="border-b border-gray-800/50 hover:bg-gray-800/30"
                         >
+                          <td className="p-3">
+                            <div className="flex items-center gap-1">
+                              <WithCopyToClipBoard
+                                text={log.id}
+                                color="text-gray-400"
+                              />
+                            </div>
+                          </td>
                           <td className="p-3 text-gray-300">
                             {formatTimestamp(log.createdAt)}
                           </td>
@@ -758,7 +767,7 @@ export default function TransactionsPage() {
                       {filteredRiskLogs.length === 0 && (
                         <tr>
                           <td
-                            colSpan={8}
+                            colSpan={9}
                             className="text-center p-8 text-gray-500"
                           >
                             {searchTerm
@@ -800,6 +809,7 @@ export default function TransactionsPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-gray-800">
+                        <th className="text-left p-3 text-gray-400">Doc ID</th>
                         <th className="text-left p-3 text-gray-400">Time</th>
                         <th className="text-left p-3 text-gray-400">User</th>
                         <th className="text-left p-3 text-gray-400">
@@ -826,6 +836,14 @@ export default function TransactionsPage() {
                           key={log.id}
                           className="border-b border-gray-800/50 hover:bg-gray-800/30"
                         >
+                          <td className="p-3">
+                            <div className="flex items-center gap-1">
+                              <WithCopyToClipBoard
+                                text={log.id}
+                                color="text-gray-400"
+                              />
+                            </div>
+                          </td>
                           <td className="p-3 text-gray-300">
                             {formatTimestamp(log.createdAt)}
                           </td>
@@ -891,7 +909,7 @@ export default function TransactionsPage() {
                       {filteredAuthLogs.length === 0 && (
                         <tr>
                           <td
-                            colSpan={10}
+                            colSpan={11}
                             className="text-center p-8 text-gray-500"
                           >
                             {searchTerm
@@ -933,6 +951,7 @@ export default function TransactionsPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-gray-800">
+                        <th className="text-left p-3 text-gray-400">Doc ID</th>
                         <th className="text-left p-3 text-gray-400">Time</th>
                         <th className="text-left p-3 text-gray-400">User</th>
                         <th className="text-left p-3 text-gray-400">
@@ -952,6 +971,14 @@ export default function TransactionsPage() {
                           key={log.id}
                           className="border-b border-gray-800/50 hover:bg-gray-800/30"
                         >
+                          <td className="p-3">
+                            <div className="flex items-center gap-1">
+                              <WithCopyToClipBoard
+                                text={log.id}
+                                color="text-gray-400"
+                              />
+                            </div>
+                          </td>
                           <td className="p-3 text-gray-300">
                             {formatTimestamp(log.createdAt)}
                           </td>
@@ -999,7 +1026,7 @@ export default function TransactionsPage() {
                       {filteredCapturedLogs.length === 0 && (
                         <tr>
                           <td
-                            colSpan={7}
+                            colSpan={8}
                             className="text-center p-8 text-gray-500"
                           >
                             {searchTerm
@@ -1041,6 +1068,7 @@ export default function TransactionsPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-gray-800">
+                        <th className="text-left p-3 text-gray-400">Doc ID</th>
                         <th className="text-left p-3 text-gray-400">Time</th>
                         <th className="text-left p-3 text-gray-400">User</th>
                         <th className="text-left p-3 text-gray-400">
@@ -1060,6 +1088,14 @@ export default function TransactionsPage() {
                           key={log.id}
                           className="border-b border-gray-800/50 hover:bg-gray-800/30"
                         >
+                          <td className="p-3">
+                            <div className="flex items-center gap-1">
+                              <WithCopyToClipBoard
+                                text={log.id}
+                                color="text-gray-400"
+                              />
+                            </div>
+                          </td>
                           <td className="p-3 text-gray-300">
                             {formatTimestamp(log.createdAt)}
                           </td>
@@ -1107,7 +1143,7 @@ export default function TransactionsPage() {
                       {filteredReleasedLogs.length === 0 && (
                         <tr>
                           <td
-                            colSpan={7}
+                            colSpan={8}
                             className="text-center p-8 text-gray-500"
                           >
                             {searchTerm
