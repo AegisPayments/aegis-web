@@ -301,7 +301,7 @@ export default function TransactionsPage() {
     try {
       const [riskData, authData, capturedData, releasedData] =
         await Promise.all([
-          fetchFirestoreData("risk-logs", "risk"),
+          fetchFirestoreData("risk-assessments", "risk"),
           fetchFirestoreData("authorization-logs", "auth"),
           fetchFirestoreData("captured-logs", "captured"),
           fetchFirestoreData("funds-released-logs", "released"),
@@ -713,6 +713,7 @@ export default function TransactionsPage() {
                           Confidence
                         </th>
                         <th className="text-left p-3 text-gray-400">Reason</th>
+                        <th className="text-left p-3 text-gray-400">Tx Hash</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -772,12 +773,28 @@ export default function TransactionsPage() {
                           <td className="p-3 text-gray-300 max-w-xs truncate">
                             {log.reason}
                           </td>
+                          <td className="p-3">
+                            <div className="flex items-center gap-1">
+                              <WithCopyToClipBoard
+                                text={log.txHash}
+                                color="text-orange-400"
+                              />
+                              <a
+                                href={`https://sepolia.etherscan.io/tx/${log.txHash}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-gray-400 hover:text-white"
+                              >
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
+                            </div>
+                          </td>
                         </tr>
                       ))}
                       {filteredRiskLogs.length === 0 && (
                         <tr>
                           <td
-                            colSpan={9}
+                            colSpan={10}
                             className="text-center p-8 text-gray-500"
                           >
                             {searchTerm
