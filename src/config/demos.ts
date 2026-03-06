@@ -369,8 +369,8 @@ export const demoConfig: TDemoConfig = {
                 {
                     id: 1,
                     title: "Fraudulent Authorization — REJECTED",
-                    description: "An attacker with a stolen device attempts to authorize $500 for a ride. The signature is valid (device has the key), but the CRE AI fraud detection catches the anomaly — $500 is 27x the user's average fare, the request comes at an unusual hour, and the location doesn't match the user's typical area. Authorization is blocked before any funds are locked.",
-                    userAction: "Attacker attempts $500 authorization from stolen device. Signature is valid but AI fraud detection flags the amount, timing, and location as highly suspicious. No funds are locked.",
+                    description: "An attacker with a stolen device attempts to authorize $500 for a ride. The signature is valid (device has the key), but the CRE AI fraud detection catches the anomaly — $500 is 27x the user's average fare, the request comes at an unusual hour. Authorization is blocked before any funds are locked.",
+                    userAction: "Attacker attempts $500 authorization from stolen device. Signature is valid but AI fraud detection flags the amount, timing, and pattern as highly suspicious. No funds are locked.",
                     terminalPanes: [
                         {
                             label: "Sign Payload",
@@ -380,7 +380,7 @@ export const demoConfig: TDemoConfig = {
                         {
                             label: "Run Authorize",
                             command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 500, \"nonce\": 1, \"signature\": \"0x4d5e6f...\"}' --target local-simulation --non-interactive --trigger-index 0",
-                            output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User transaction history retrieved\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ ⚠️ ALERT: $500.00 is 27x user's average fare ($18.50)\\n  └─ ⚠️ ALERT: Unusual activity time — 3:42 AM\\n  └─ ⚠️ ALERT: Location mismatch with user's typical area\\n  └─ Risk Level: CRITICAL — Possible stolen device\\n❌ Authorization REJECTED: Fraud risk too high\\n⚡ On-chain execution blocked — no funds locked\\n📊 Fraud alert written to Firestore\\n🗄️ Account flagged for security review"
+                            output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User transaction history retrieved\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ ⚠️ ALERT: $500.00 is 27x user's average fare ($18.50)\\n  └─ ⚠️ ALERT: Unusual activity time — 3:42 AM\\n  └─ ⚠️ ALERT: Mismatch with user's typical transaction pattern\\n  └─ Risk Level: CRITICAL — Possible stolen device\\n❌ Authorization REJECTED: Fraud risk too high\\n⚡ On-chain execution blocked — no funds locked\\n📊 Fraud alert written to Firestore\\n🗄️ Account flagged for security review"
                         }
                     ],
                     appState: {
@@ -394,7 +394,7 @@ export const demoConfig: TDemoConfig = {
                 {
                     id: 2,
                     title: "Retry Attempt — Still REJECTED",
-                    description: "The attacker tries again with a lower amount ($200), hoping to slip under the radar. But the account is now flagged from the previous suspicious attempt. The AI detects the rapid retry pattern and the still-anomalous amount. The account is locked and security team is notified.",
+                    description: "The attacker tries again with a lower amount ($200), hoping to slip under the radar. But the account is now flagged from the previous suspicious attempt. The AI detects the rapid retry pattern and the still-anomalous amount. The account is flagged and security team is notified.",
                     userAction: "Attacker retries with $200. Account is already flagged from the first attempt. AI detects rapid retry pattern and locks the account entirely. Security team notified.",
                     terminalPanes: [
                         {
@@ -405,13 +405,13 @@ export const demoConfig: TDemoConfig = {
                         {
                             label: "Run Authorize",
                             command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 200, \"nonce\": 2, \"signature\": \"0x5e6f78...\"}' --target local-simulation --non-interactive --trigger-index 0",
-                            output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User transaction history retrieved\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ ⚠️ ALERT: Account flagged from previous suspicious attempt\\n  └─ ⚠️ ALERT: Rapid retry — 2 attempts in 3 minutes\\n  └─ ⚠️ ALERT: $200.00 still anomalous for this user profile\\n  └─ Risk Level: CRITICAL — Account under security hold\\n❌ Authorization REJECTED: Account security hold active\\n⚡ On-chain execution blocked — no funds locked\\n📊 Second rejection logged to Firestore\\n🗄️ Security team notified — account locked"
+                            output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User transaction history retrieved\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ ⚠️ ALERT: Account flagged from previous suspicious attempt\\n  └─ ⚠️ ALERT: Rapid retry — 2 attempts in 3 minutes\\n  └─ ⚠️ ALERT: $200.00 still anomalous for this user profile\\n  └─ Risk Level: CRITICAL — Account under security hold\\n❌ Authorization REJECTED: Account security hold active\\n⚡ On-chain execution blocked — no funds locked\\n📊 Second rejection logged to Firestore\\n🗄️ Security team notified — account flagged"
                         }
                     ],
                     appState: {
                         currentAuth: "$0.00",
                         balance: "$1000.00",
-                        status: "Account Locked",
+                        status: "Account Flagged",
                         actionStepTitle: "⚠ Retry $200",
                         progress: 100
                     }
