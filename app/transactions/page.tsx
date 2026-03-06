@@ -194,7 +194,7 @@ function WithCopyToClipBoard({
 }
 
 export default function TransactionsPage() {
-  const [activeTab, setActiveTab] = useState("risk-logs");
+  const [activeTab, setActiveTab] = useState("authorization-logs");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilters, setSearchFilters] = useState<SearchFilter[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -416,7 +416,14 @@ export default function TransactionsPage() {
       },
       "authorization-logs": {
         data: authLogs,
-        fields: ["userAddress", "merchantAddress", "merchantType", "functionName", "fraudDecision", "txHash"],
+        fields: [
+          "userAddress",
+          "merchantAddress",
+          "merchantType",
+          "functionName",
+          "fraudDecision",
+          "txHash",
+        ],
       },
       "captured-logs": {
         data: capturedLogs,
@@ -895,7 +902,7 @@ export default function TransactionsPage() {
                                 color="text-orange-400"
                               />
                               <a
-                                href={`https://etherscan.io/tx/${log.txHash}`}
+                                href={`https://sepolia.etherscan.io/tx/${log.txHash}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-gray-400 hover:text-white"
@@ -1011,7 +1018,7 @@ export default function TransactionsPage() {
                                 color="text-orange-400"
                               />
                               <a
-                                href={`https://etherscan.io/tx/${log.transactionHash}`}
+                                href={`https://sepolia.etherscan.io/tx/${log.transactionHash}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-gray-400 hover:text-white"
@@ -1128,7 +1135,7 @@ export default function TransactionsPage() {
                                 color="text-orange-400"
                               />
                               <a
-                                href={`https://etherscan.io/tx/${log.transactionHash}`}
+                                href={`https://sepolia.etherscan.io/tx/${log.transactionHash}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-gray-400 hover:text-white"
