@@ -326,8 +326,11 @@ export default function TransactionsPage() {
     return (amount / 1e18).toFixed(6); // Assuming 18 decimal places
   };
 
-  const formatTimestamp = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleString();
+  const formatTimestamp = (timestamp: number | string) => {
+    const ts = Number(timestamp);
+    // Timestamps > 1e12 are already in milliseconds
+    const ms = ts > 1e12 ? ts : ts * 1000;
+    return new Date(ms).toLocaleString();
   };
 
   const getRiskBadgeVariant = (decision: string) => {
@@ -764,7 +767,7 @@ export default function TransactionsPage() {
                             </div>
                           </td>
                           <td className="p-3 text-purple-400">
-                            {log.confidence}%
+                            {log.confidence}
                           </td>
                           <td className="p-3 text-gray-300 max-w-xs truncate">
                             {log.reason}
@@ -892,7 +895,7 @@ export default function TransactionsPage() {
                             </div>
                           </td>
                           <td className="p-3 text-purple-400">
-                            {log.fraudConfidence}%
+                            {log.fraudConfidence}
                           </td>
                           <td className="p-3 text-purple-400">{log.nonce}</td>
                           <td className="p-3">
