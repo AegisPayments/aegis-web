@@ -247,7 +247,7 @@ export function AppMockup({
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-300/5 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               <div className="text-center relative z-10">
                 <div className="text-cyan-300 text-sm mb-1 transition-colors duration-300 group-hover:text-cyan-200">
-                  Current Authorization
+                  Authorization
                 </div>
                 <div className="text-xl font-bold text-cyan-400 transition-all duration-300 group-hover:text-cyan-300 group-hover:scale-105">
                   {currentAuth}
