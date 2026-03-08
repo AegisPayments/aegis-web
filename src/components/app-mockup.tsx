@@ -3,8 +3,8 @@
 import { Button } from "@/src/components/ui/button";
 import { Card } from "@/src/components/ui/card";
 import { Badge } from "@/src/components/ui/badge";
-import { Zap, Car, Bot, Wallet, Wifi } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Zap, Car, Bot, Wallet, Wifi, Shield, CheckCircle } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
 
 interface AppMockupProps {
   title: string;
@@ -16,6 +16,8 @@ interface AppMockupProps {
   stepTitle?: string;
   isComplete?: boolean;
   merchantType?: string;
+  userWallet?: string;
+  isSigningStep?: boolean;
 }
 
 export function AppMockup({
@@ -28,9 +30,14 @@ export function AppMockup({
   stepTitle = "Next Step",
   isComplete = false,
   merchantType = "",
+  userWallet = "",
+  isSigningStep = false,
 }: AppMockupProps) {
   // Live interactive states
   const [mounted, setMounted] = useState(false);
+  const [cardPhase, setCardPhase] = useState<
+    "idle" | "presenting" | "signing" | "complete"
+  >("idle");
   const [currentTime, setCurrentTime] = useState(new Date());
   const [batteryLevel, setBatteryLevel] = useState(87);
   const [signalBars, setSignalBars] = useState(4);
@@ -130,6 +137,24 @@ export function AppMockup({
         return <Wallet className={iconClass} />;
     }
   };
+
+  const truncateWallet = (addr: string) =>
+    addr ? `${addr.slice(0, 6)}····${addr.slice(-4)}` : "";
+
+  const handleActionClick = useCallback(() => {
+    if (isComplete) return;
+    if (isSigningStep) {
+      setCardPhase("presenting");
+      setTimeout(() => setCardPhase("signing"), 500);
+      setTimeout(() => setCardPhase("complete"), 1400);
+      setTimeout(() => {
+        setCardPhase("idle");
+        onNextStep();
+      }, 2000);
+    } else {
+      onNextStep();
+    }
+  }, [isSigningStep, isComplete, onNextStep]);
 
   return (
     <div className="max-w-sm mx-auto">
@@ -255,6 +280,92 @@ export function AppMockup({
               </div>
             </Card>
 
+            {/* Aegis Card Overlay */}
+            {cardPhase !== "idle" && (
+              <div
+                className={`mb-6 transition-all duration-500 ${
+                  cardPhase === "presenting"
+                    ? "opacity-0 translate-y-4 scale-95 animate-[cardIn_0.5s_ease-out_forwards]"
+                    : cardPhase === "complete"
+                      ? "opacity-100 scale-95 translate-y-2"
+                      : "opacity-100 translate-y-0 scale-100"
+                }`}
+              >
+                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-gray-800 via-gray-900 to-black border border-cyan-500/30 p-4 shadow-lg shadow-cyan-400/10">
+                  {/* Card shimmer */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/5 to-transparent animate-[shimmer_2s_infinite] -skew-x-12" />
+
+                  {/* Card header */}
+                  <div className="flex items-center justify-between mb-4 relative z-10">
+                    <div className="flex items-center gap-2">
+                      <Shield className="w-4 h-4 text-cyan-400" />
+                      <span className="text-xs font-bold tracking-widest text-cyan-400">
+                        AEGIS
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {/* Contactless icon */}
+                      <svg
+                        viewBox="0 0 24 24"
+                        className={`w-5 h-5 transition-colors duration-300 ${cardPhase === "signing" ? "text-cyan-400 animate-pulse" : "text-gray-500"}`}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M8.5 16.5a5 5 0 0 1 0-9" />
+                        <path d="M12 19a9 9 0 0 1 0-14" />
+                        <path d="M15.5 21.5a13 13 0 0 1 0-19" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Card chip */}
+                  <div className="mb-3 relative z-10">
+                    <div className="w-10 h-7 rounded-md bg-gradient-to-br from-yellow-600/80 to-yellow-800/80 border border-yellow-500/30 flex items-center justify-center">
+                      <div className="w-6 h-4 rounded-sm border border-yellow-500/40 grid grid-cols-2 grid-rows-2 gap-px">
+                        <div className="bg-yellow-600/50 rounded-tl-sm" />
+                        <div className="bg-yellow-600/50 rounded-tr-sm" />
+                        <div className="bg-yellow-600/50 rounded-bl-sm" />
+                        <div className="bg-yellow-600/50 rounded-br-sm" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Wallet address as card number */}
+                  <div className="mb-3 relative z-10">
+                    <div className="font-mono text-sm tracking-wider text-gray-300">
+                      {truncateWallet(userWallet)}
+                    </div>
+                  </div>
+
+                  {/* Signing status */}
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="text-[10px] uppercase tracking-wider text-gray-500">
+                      EIP-712 Signature
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      {cardPhase === "signing" && (
+                        <div className="flex items-center gap-1 text-cyan-400">
+                          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                          <span className="text-[10px] font-medium">
+                            Signing...
+                          </span>
+                        </div>
+                      )}
+                      {cardPhase === "complete" && (
+                        <div className="flex items-center gap-1 text-green-400">
+                          <CheckCircle className="w-3 h-3" />
+                          <span className="text-[10px] font-medium">
+                            Signed
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Progress Bar */}
             <div className="mb-6 group">
               <div className="text-gray-400 text-sm mb-2 transition-colors duration-300 group-hover:text-gray-300">
@@ -276,8 +387,8 @@ export function AppMockup({
 
             {/* Action Button */}
             <Button
-              onClick={onNextStep}
-              disabled={isComplete}
+              onClick={handleActionClick}
+              disabled={isComplete || cardPhase !== "idle"}
               className="w-full bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-cyan-600 text-black font-medium py-3 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/25 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group"
             >
               <span className="relative z-10">

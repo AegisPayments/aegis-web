@@ -286,6 +286,12 @@ export default function DemosPage() {
                 }
                 isComplete={isComplete}
                 merchantType={selectedScenario.merchantType}
+                userWallet={selectedScenario.userWallet}
+                isSigningStep={
+                  selectedScenario.steps[currentStep + 1]?.terminalPanes?.some(
+                    (p) => p.label === "Sign Payload",
+                  ) ?? false
+                }
               />
             </div>
             {/* Right Side - Terminal Mockup */}
