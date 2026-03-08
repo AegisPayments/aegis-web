@@ -207,7 +207,7 @@ export default function TransactionsPage() {
   const [activeTab, setActiveTab] = useState("authorization-logs");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilters, setSearchFilters] = useState<SearchFilter[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [showAddFilter, setShowAddFilter] = useState(false);
   const [selectedField, setSelectedField] = useState("");
   const [filterValue, setFilterValue] = useState("");
@@ -808,9 +808,11 @@ export default function TransactionsPage() {
                             colSpan={10}
                             className="text-center p-8 text-gray-500"
                           >
-                            {searchTerm
-                              ? "No matching risk logs found"
-                              : "No risk logs available"}
+                            {isLoading
+                              ? "Loading risk logs..."
+                              : searchTerm
+                                ? "No matching risk logs found"
+                                : "No risk logs available"}
                           </td>
                         </tr>
                       )}
@@ -950,9 +952,11 @@ export default function TransactionsPage() {
                             colSpan={11}
                             className="text-center p-8 text-gray-500"
                           >
-                            {searchTerm
-                              ? "No matching authorization logs found"
-                              : "No authorization logs available"}
+                            {isLoading
+                              ? "Loading authorization logs..."
+                              : searchTerm
+                                ? "No matching authorization logs found"
+                                : "No authorization logs available"}
                           </td>
                         </tr>
                       )}
@@ -1063,9 +1067,11 @@ export default function TransactionsPage() {
                             colSpan={7}
                             className="text-center p-8 text-gray-500"
                           >
-                            {searchTerm
-                              ? "No matching captured logs found"
-                              : "No captured funds logs available"}
+                            {isLoading
+                              ? "Loading captured logs..."
+                              : searchTerm
+                                ? "No matching captured logs found"
+                                : "No captured funds logs available"}
                           </td>
                         </tr>
                       )}
@@ -1176,9 +1182,11 @@ export default function TransactionsPage() {
                             colSpan={7}
                             className="text-center p-8 text-gray-500"
                           >
-                            {searchTerm
-                              ? "No matching released logs found"
-                              : "No released funds logs available"}
+                            {isLoading
+                              ? "Loading released logs..."
+                              : searchTerm
+                                ? "No matching released logs found"
+                                : "No released funds logs available"}
                           </td>
                         </tr>
                       )}
