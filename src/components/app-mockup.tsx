@@ -371,7 +371,7 @@ export function AppMockup({
 
                 <div className="mt-6 text-xs text-gray-500 space-y-1">
                   {[
-                    "Funds secured in AegisPay ledger",
+                    "Funds deposited to an Liquid Account",
                     "AI risk engine monitoring",
                     "Real-time authorization updates",
                   ].map((text, index) => (
