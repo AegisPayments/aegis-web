@@ -1,5 +1,10 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card } from "@/components/ui/card";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/src/components/ui/tabs";
+import { Card } from "@/src/components/ui/card";
 import MarkdownRenderer from "@/src/components/docs/markdown-renderer";
 import SearchBar from "@/src/components/docs/search-bar";
 import TableOfContents from "@/src/components/docs/table-of-contents";

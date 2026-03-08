@@ -19,11 +19,12 @@ AegisPay web frontend - a marketing, docs, and interactive demo site for a decen
 **Path alias:** `@/*` maps to project root (configured in tsconfig.json).
 
 **Directory layout:**
+
 - `app/` - Next.js App Router pages (layout.tsx, page.tsx, demos/, docs/)
 - `src/components/` - Application components (header, hero-section, feature-grid, terminal-mockup, app-mockup, video-section, footer)
 - `src/components/docs/` - Documentation page components (markdown-renderer, search-bar, table-of-contents)
 - `src/config/` - Site configuration (site.ts for nav/features/copy, demos.ts for demo data)
-- `components/ui/` - shadcn/ui primitives (button, card, badge, switch, tabs)
+- `src/components/ui/` - shadcn/ui primitives (button, card, badge, switch, tabs)
 - `lib/utils.ts` - Utility functions (cn helper via clsx + tailwind-merge)
 
 **Styling:** Tailwind CSS 4 with `@tailwindcss/postcss`. Dark mode is always on (`className="dark"` on html element). Uses `tw-animate-css` for animations. Custom `aegis-gradient-bg` class on body.

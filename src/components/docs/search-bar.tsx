@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { Search, X } from "lucide-react";
 import Fuse from "fuse.js";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/src/components/ui/card";
 import { generateHeadingId } from "@/lib/utils";
 
 interface SearchResult {

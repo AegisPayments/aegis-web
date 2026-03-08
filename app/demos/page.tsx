@@ -4,9 +4,9 @@ import { useState, useRef } from "react";
 import { Header } from "@/src/components/header";
 import { AppMockup } from "@/src/components/app-mockup";
 import { TerminalMockup } from "@/src/components/terminal-mockup";
-import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Switch } from "@/src/components/ui/switch";
+import { Badge } from "@/src/components/ui/badge";
+import { Card, CardContent } from "@/src/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { demoConfig } from "@/src/config/demos";
 import { Footer } from "@/src/components/footer";
@@ -19,7 +19,9 @@ export default function DemosPage() {
   const [isSimulationMode, setIsSimulationMode] = useState(true);
   const [simulationMode, setSimulationMode] = useState("view-only"); // "view-only" | "hands-on"
   const [isTyping, setIsTyping] = useState(false);
-  const [scenarioCategory, setScenarioCategory] = useState<"standard" | "rejection">("standard");
+  const [scenarioCategory, setScenarioCategory] = useState<
+    "standard" | "rejection"
+  >("standard");
   const simulationRef = useRef<HTMLDivElement>(null);
 
   const handleNextStep = () => {
@@ -387,35 +389,44 @@ export default function DemosPage() {
                     <p className="text-gray-400 mb-4 leading-relaxed">
                       {currentStepData?.description}
                     </p>
-                    {currentStepData?.userAction && (() => {
-                      const isRejectionStep =
-                        currentStepData?.appState?.status?.includes("Rejected") ||
-                        currentStepData?.appState?.status?.includes("Locked");
-                      return (
-                        <div
-                          className={`mt-4 p-3 rounded-lg ${
-                            isRejectionStep
-                              ? "bg-red-500/10 border border-red-500/20"
-                              : "bg-green-500/10 border border-green-500/20"
-                          }`}
-                        >
+                    {currentStepData?.userAction &&
+                      (() => {
+                        const isRejectionStep =
+                          currentStepData?.appState?.status?.includes(
+                            "Rejected",
+                          ) ||
+                          currentStepData?.appState?.status?.includes("Locked");
+                        return (
                           <div
-                            className={`text-sm font-medium mb-1 ${
-                              isRejectionStep ? "text-red-400" : "text-green-400"
+                            className={`mt-4 p-3 rounded-lg ${
+                              isRejectionStep
+                                ? "bg-red-500/10 border border-red-500/20"
+                                : "bg-green-500/10 border border-green-500/20"
                             }`}
                           >
-                            {isRejectionStep ? "Security Event:" : "User Action:"}
+                            <div
+                              className={`text-sm font-medium mb-1 ${
+                                isRejectionStep
+                                  ? "text-red-400"
+                                  : "text-green-400"
+                              }`}
+                            >
+                              {isRejectionStep
+                                ? "Security Event:"
+                                : "User Action:"}
+                            </div>
+                            <div
+                              className={`text-sm ${
+                                isRejectionStep
+                                  ? "text-red-300"
+                                  : "text-green-300"
+                              }`}
+                            >
+                              {currentStepData.userAction}
+                            </div>
                           </div>
-                          <div
-                            className={`text-sm ${
-                              isRejectionStep ? "text-red-300" : "text-green-300"
-                            }`}
-                          >
-                            {currentStepData.userAction}
-                          </div>
-                        </div>
-                      );
-                    })()}
+                        );
+                      })()}
                   </CardContent>
                 </Card>
               )}

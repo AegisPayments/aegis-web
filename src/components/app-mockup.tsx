@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/src/components/ui/button";
+import { Card } from "@/src/components/ui/card";
+import { Badge } from "@/src/components/ui/badge";
 import { Zap, Car, Bot, Wallet, Wifi } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -93,7 +93,11 @@ export function AppMockup({
     return "border-red-400";
   };
   const getStatusColor = (status: string) => {
-    if (status.includes("Rejected") || status.includes("Locked") || status.includes("Flagged"))
+    if (
+      status.includes("Rejected") ||
+      status.includes("Locked") ||
+      status.includes("Flagged")
+    )
       return "text-red-400";
     if (status.includes("Complete")) return "text-green-400";
     if (

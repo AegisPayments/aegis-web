@@ -3,10 +3,20 @@
 import { useState, useEffect } from "react";
 import { Header } from "@/src/components/header";
 import { Footer } from "@/src/components/footer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/src/components/ui/card";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/src/components/ui/tabs";
+import { Badge } from "@/src/components/ui/badge";
+import { Button } from "@/src/components/ui/button";
 import {
   Search,
   RefreshCw,
@@ -324,7 +334,7 @@ export default function TransactionsPage() {
 
   const formatAmount = (amount: number) => {
     // return (amount / 1e18).toFixed(6); // Assuming 18 decimal places
-    return amount // Let's just pretent this is USD for now. this is actually decimals of USDC
+    return amount; // Let's just pretent this is USD for now. this is actually decimals of USDC
   };
 
   const formatTimestamp = (timestamp: number | string) => {
