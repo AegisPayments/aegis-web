@@ -250,7 +250,7 @@ export function AppMockup({
   };
 
   return (
-    <div className="max-w-sm mx-auto">
+    <div className="w-[360px] max-w-sm mx-auto">
       {/* Phone Frame */}
       <div className="bg-gray-900 rounded-[2.5rem] p-2 shadow-2xl">
         <div className="bg-black rounded-[2rem] overflow-hidden">
