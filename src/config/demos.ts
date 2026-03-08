@@ -127,7 +127,7 @@ export const demoConfig: TDemoConfig = {
                 {
                     id: 1,
                     title: "Sign & Authorize Ride",
-                    description: "User signs an EIP-712 off-chain authorization for the estimated fare. The CRE workflow validates the signature, queries Firestore for user ride history, runs AI-powered fraud detection, and executes the authorization on-chain via Chainlink Forwarder. An authorization log is written to Firestore for full auditability.",
+                    description: "User signs an EIP-712 off-chain authorization for the estimated fare. The CRE workflow validates the signature, queries Firestore for user transaction history, runs AI-powered fraud detection, and executes the authorization on-chain via Chainlink Forwarder. An authorization log is written to Firestore for full auditability.",
                     userAction: "User confirms the ride booking. The app signs the $18 authorization and forwards it to the Aegis CRE workflow for AI fraud assessment before locking funds on-chain.",
                     terminalPanes: [
                         {
@@ -138,7 +138,7 @@ export const demoConfig: TDemoConfig = {
                         {
                             label: "Run Authorize",
                             command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 0, \"signature\": \"0x2b3c4d...\"}' --target local-simulation --non-interactive --trigger-index 0",
-                            output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User ride history — 15 previous trips\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ Risk Level: LOW — Established ride-share user\\n  └─ Amount $18.00 within normal fare range\\n  └─ Fraud Indicators: None detected\\n✅ Authorization APPROVED: $18.00\\n⚡ authorize() executed via Chainlink Forwarder\\n📊 Authorization log written to Firestore"
+                            output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User transaction history — 15 previous trips\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ Risk Level: LOW — Established ride-share user\\n  └─ Amount $18.00 within normal fare range\\n  └─ Fraud Indicators: None detected\\n✅ Authorization APPROVED: $18.00\\n⚡ authorize() executed via Chainlink Forwarder\\n📊 Authorization log written to Firestore"
                         }
                     ],
                     appState: {
@@ -152,7 +152,7 @@ export const demoConfig: TDemoConfig = {
                 {
                     id: 2,
                     title: "AI Risk Engine: Route Adjustment",
-                    description: "Heavy traffic requires a fare increment. The driver submits a secureIncrement request through the Aegis AI Risk Engine. The LLM evaluates user ride history, RIDE_SHARE variance limits (up to 50%), and fraud indicators before approving the adjustment on-chain. The updated authorization is logged to Firestore for full auditability.",
+                    description: "Heavy traffic requires a fare increment. The driver submits a secureIncrement request through the Aegis AI Risk Engine. The LLM evaluates user transaction history, RIDE_SHARE variance limits (up to 50%), and fraud indicators before approving the adjustment on-chain. The updated authorization is logged to Firestore for full auditability.",
                     userAction: "Driver encounters major traffic and requests a fare adjustment. The Aegis AI Risk Engine evaluates the increment against RIDE_SHARE category limits and approves the on-chain adjustment.",
                     terminalPanes: [
                         {
@@ -299,7 +299,7 @@ export const demoConfig: TDemoConfig = {
                         {
                             label: "Run Authorize",
                             command: "cre workflow simulate ./aegis-workflow --http-payload '{\"functionName\": \"authorize\", \"merchantType\": \"RIDE_SHARE\", \"user\": \"0x9F77cBDb561aaD32b403695306e3eea53F9B40e7\", \"merchant\": \"0x8F88cBDb561aaD32b403695306e3eea53F9B50f8\", \"amount\": 18, \"nonce\": 0, \"signature\": \"0x2b3c4d...\"}' --target local-simulation --non-interactive --trigger-index 0",
-                            output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User ride history — 15 previous trips\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ Risk Level: LOW — Established ride-share user\\n  └─ Amount $18.00 within normal fare range\\n  └─ Fraud Indicators: None detected\\n✅ Authorization APPROVED: $18.00\\n⚡ authorize() executed via Chainlink Forwarder\\n📊 Authorization log written to Firestore"
+                            output: "🔄 CRE HTTP Trigger initiated...\\n🔐 Signature validation: PASSED\\n🗄️ Firebase query: User transaction history — 15 previous trips\\n🤖 LLM Fraud Detection: Analyzing RIDE_SHARE pattern\\n  └─ Risk Level: LOW — Established ride-share user\\n  └─ Amount $18.00 within normal fare range\\n  └─ Fraud Indicators: None detected\\n✅ Authorization APPROVED: $18.00\\n⚡ authorize() executed via Chainlink Forwarder\\n📊 Authorization log written to Firestore"
                         }
                     ],
                     appState: {
