@@ -18,6 +18,7 @@ interface AppMockupProps {
   merchantType?: string;
   userWallet?: string;
   isSigningStep?: boolean;
+  isStartScreen?: boolean;
 }
 
 export function AppMockup({
@@ -32,6 +33,7 @@ export function AppMockup({
   merchantType = "",
   userWallet = "",
   isSigningStep = false,
+  isStartScreen = false,
 }: AppMockupProps) {
   // Live interactive states
   const [mounted, setMounted] = useState(false);
@@ -156,6 +158,97 @@ export function AppMockup({
     }
   }, [isSigningStep, isComplete, onNextStep]);
 
+  const renderAegisCard = (variant: "static" | "animated") => {
+    const isStatic = variant === "static";
+    return (
+      <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-gray-800 via-gray-900 to-black border border-cyan-500/30 p-4 shadow-lg shadow-cyan-400/10">
+        {/* Card shimmer */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/5 to-transparent animate-[shimmer_2s_infinite] -skew-x-12" />
+
+        {/* Card header */}
+        <div className="flex items-center justify-between mb-4 relative z-10">
+          <div className="flex items-center gap-2">
+            <Shield className="w-4 h-4 text-cyan-400" />
+            <span className="text-xs font-bold tracking-widest text-cyan-400">
+              AEGIS
+            </span>
+          </div>
+          <div className="flex items-center gap-1">
+            <svg
+              viewBox="0 0 24 24"
+              className={`w-5 h-5 transition-colors duration-300 ${
+                !isStatic && cardPhase === "signing"
+                  ? "text-cyan-400 animate-pulse"
+                  : "text-gray-500"
+              }`}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M8.5 16.5a5 5 0 0 1 0-9" />
+              <path d="M12 19a9 9 0 0 1 0-14" />
+              <path d="M15.5 21.5a13 13 0 0 1 0-19" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Card chip */}
+        <div className="mb-3 relative z-10">
+          <div className="w-10 h-7 rounded-md bg-gradient-to-br from-yellow-600/80 to-yellow-800/80 border border-yellow-500/30 flex items-center justify-center">
+            <div className="w-6 h-4 rounded-sm border border-yellow-500/40 grid grid-cols-2 grid-rows-2 gap-px">
+              <div className="bg-yellow-600/50 rounded-tl-sm" />
+              <div className="bg-yellow-600/50 rounded-tr-sm" />
+              <div className="bg-yellow-600/50 rounded-bl-sm" />
+              <div className="bg-yellow-600/50 rounded-br-sm" />
+            </div>
+          </div>
+        </div>
+
+        {/* Wallet address as card number */}
+        <div className="mb-3 relative z-10">
+          <div className="font-mono text-sm tracking-wider text-gray-300">
+            {truncateWallet(userWallet)}
+          </div>
+        </div>
+
+        {/* Balance row (start screen only) */}
+        {isStatic && (
+          <div className="mb-3 relative z-10">
+            <div className="flex items-center justify-between">
+              <div className="text-[10px] uppercase tracking-wider text-gray-500">
+                Balance
+              </div>
+              <div className="text-sm font-bold text-white">$1,000.00</div>
+            </div>
+          </div>
+        )}
+
+        {/* Footer row */}
+        <div className="flex items-center justify-between relative z-10">
+          <div className="text-[10px] uppercase tracking-wider text-gray-500">
+            {isStatic ? "AegisPay Protocol" : "EIP-712 Signature"}
+          </div>
+          {!isStatic && (
+            <div className="flex items-center gap-1.5">
+              {cardPhase === "signing" && (
+                <div className="flex items-center gap-1 text-cyan-400">
+                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                  <span className="text-[10px] font-medium">Signing...</span>
+                </div>
+              )}
+              {cardPhase === "complete" && (
+                <div className="flex items-center gap-1 text-green-400">
+                  <CheckCircle className="w-3 h-3" />
+                  <span className="text-[10px] font-medium">Signed</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="max-w-sm mx-auto">
       {/* Phone Frame */}
@@ -236,9 +329,7 @@ export function AppMockup({
             {/* App Header */}
             <div className="text-center mb-8">
               <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center relative overflow-hidden group">
-                {/* Subtle breathing animation */}
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-300 to-blue-400 rounded-xl animate-pulse opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
-                {/* Icon with subtle scale animation */}
                 <div className="transform transition-transform duration-300 group-hover:scale-110">
                   {getScenarioIcon(merchantType)}
                 </div>
@@ -254,167 +345,136 @@ export function AppMockup({
               </Badge>
             </div>
 
-            {/* Balance Card */}
-            <Card className="bg-gray-800/50 border-gray-700 p-4 mb-6 transition-all duration-300 hover:bg-gray-800/70 hover:border-gray-600 hover:shadow-lg hover:shadow-white/5 group">
-              <div className="text-center">
-                <div className="text-gray-400 text-sm mb-1 transition-colors duration-300 group-hover:text-gray-300">
-                  Account Balance
-                </div>
-                <div className="text-2xl font-bold text-white transition-transform duration-300 group-hover:scale-105">
-                  {balance}
-                </div>
-              </div>
-            </Card>
+            {isStartScreen ? (
+              <>
+                {/* Start Screen: Aegis Card (balance embedded) */}
+                <div className="mb-6">{renderAegisCard("static")}</div>
 
-            {/* Current Authorization */}
-            <Card className="bg-cyan-900/20 border-cyan-500/30 p-4 mb-6 transition-all duration-300 hover:bg-cyan-900/30 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-400/10 group relative overflow-hidden">
-              {/* Animated background shimmer */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-300/5 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              <div className="text-center relative z-10">
-                <div className="text-cyan-300 text-sm mb-1 transition-colors duration-300 group-hover:text-cyan-200">
-                  Authorization
-                </div>
-                <div className="text-xl font-bold text-cyan-400 transition-all duration-300 group-hover:text-cyan-300 group-hover:scale-105">
-                  {currentAuth}
-                </div>
-              </div>
-            </Card>
-
-            {/* Aegis Card Overlay */}
-            {cardPhase !== "idle" && (
-              <div
-                className={`mb-6 transition-all duration-500 ${
-                  cardPhase === "presenting"
-                    ? "opacity-0 translate-y-4 scale-95 animate-[cardIn_0.5s_ease-out_forwards]"
-                    : cardPhase === "complete"
-                      ? "opacity-100 scale-95 translate-y-2"
-                      : "opacity-100 translate-y-0 scale-100"
-                }`}
-              >
-                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-gray-800 via-gray-900 to-black border border-cyan-500/30 p-4 shadow-lg shadow-cyan-400/10">
-                  {/* Card shimmer */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/5 to-transparent animate-[shimmer_2s_infinite] -skew-x-12" />
-
-                  {/* Card header */}
-                  <div className="flex items-center justify-between mb-4 relative z-10">
-                    <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-cyan-400" />
-                      <span className="text-xs font-bold tracking-widest text-cyan-400">
-                        AEGIS
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      {/* Contactless icon */}
-                      <svg
-                        viewBox="0 0 24 24"
-                        className={`w-5 h-5 transition-colors duration-300 ${cardPhase === "signing" ? "text-cyan-400 animate-pulse" : "text-gray-500"}`}
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path d="M8.5 16.5a5 5 0 0 1 0-9" />
-                        <path d="M12 19a9 9 0 0 1 0-14" />
-                        <path d="M15.5 21.5a13 13 0 0 1 0-19" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Card chip */}
-                  <div className="mb-3 relative z-10">
-                    <div className="w-10 h-7 rounded-md bg-gradient-to-br from-yellow-600/80 to-yellow-800/80 border border-yellow-500/30 flex items-center justify-center">
-                      <div className="w-6 h-4 rounded-sm border border-yellow-500/40 grid grid-cols-2 grid-rows-2 gap-px">
-                        <div className="bg-yellow-600/50 rounded-tl-sm" />
-                        <div className="bg-yellow-600/50 rounded-tr-sm" />
-                        <div className="bg-yellow-600/50 rounded-bl-sm" />
-                        <div className="bg-yellow-600/50 rounded-br-sm" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Wallet address as card number */}
-                  <div className="mb-3 relative z-10">
-                    <div className="font-mono text-sm tracking-wider text-gray-300">
-                      {truncateWallet(userWallet)}
-                    </div>
-                  </div>
-
-                  {/* Signing status */}
-                  <div className="flex items-center justify-between relative z-10">
-                    <div className="text-[10px] uppercase tracking-wider text-gray-500">
-                      EIP-712 Signature
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      {cardPhase === "signing" && (
-                        <div className="flex items-center gap-1 text-cyan-400">
-                          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                          <span className="text-[10px] font-medium">
-                            Signing...
-                          </span>
-                        </div>
-                      )}
-                      {cardPhase === "complete" && (
-                        <div className="flex items-center gap-1 text-green-400">
-                          <CheckCircle className="w-3 h-3" />
-                          <span className="text-[10px] font-medium">
-                            Signed
-                          </span>
-                        </div>
-                      )}
-                    </div>
+                {/* Start Screen: Ready indicator */}
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20">
+                    <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                    <span className="text-xs text-cyan-300">
+                      Ready to begin
+                    </span>
                   </div>
                 </div>
-              </div>
+
+                {/* Start Screen: Action Button */}
+                <Button
+                  onClick={onNextStep}
+                  className="w-full bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-cyan-600 text-black font-medium py-3 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/25 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group"
+                >
+                  <span className="relative z-10">{stepTitle}</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </Button>
+
+                <div className="mt-6 text-xs text-gray-500 space-y-1">
+                  {[
+                    "Funds secured in AegisPay ledger",
+                    "AI risk engine monitoring",
+                    "Real-time authorization updates",
+                  ].map((text, index) => (
+                    <div
+                      key={index}
+                      className="transition-all duration-300 hover:text-gray-400 hover:translate-x-1"
+                    >
+                      • {text}
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Balance Card */}
+                <Card className="bg-gray-800/50 border-gray-700 p-4 mb-6 transition-all duration-300 hover:bg-gray-800/70 hover:border-gray-600 hover:shadow-lg hover:shadow-white/5 group">
+                  <div className="text-center">
+                    <div className="text-gray-400 text-sm mb-1 transition-colors duration-300 group-hover:text-gray-300">
+                      Account Balance
+                    </div>
+                    <div className="text-2xl font-bold text-white transition-transform duration-300 group-hover:scale-105">
+                      {balance}
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Current Authorization */}
+                <Card className="bg-cyan-900/20 border-cyan-500/30 p-4 mb-6 transition-all duration-300 hover:bg-cyan-900/30 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-400/10 group relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-300/5 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  <div className="text-center relative z-10">
+                    <div className="text-cyan-300 text-sm mb-1 transition-colors duration-300 group-hover:text-cyan-200">
+                      Authorization
+                    </div>
+                    <div className="text-xl font-bold text-cyan-400 transition-all duration-300 group-hover:text-cyan-300 group-hover:scale-105">
+                      {currentAuth}
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Aegis Card Overlay (signing animation) */}
+                {cardPhase !== "idle" && (
+                  <div
+                    className={`mb-6 transition-all duration-500 ${
+                      cardPhase === "presenting"
+                        ? "opacity-0 translate-y-4 scale-95 animate-[cardIn_0.5s_ease-out_forwards]"
+                        : cardPhase === "complete"
+                          ? "opacity-100 scale-95 translate-y-2"
+                          : "opacity-100 translate-y-0 scale-100"
+                    }`}
+                  >
+                    {renderAegisCard("animated")}
+                  </div>
+                )}
+
+                {/* Progress Bar */}
+                <div className="mb-6 group">
+                  <div className="text-gray-400 text-sm mb-2 transition-colors duration-300 group-hover:text-gray-300">
+                    Progress
+                  </div>
+                  <div className="bg-gray-700 rounded-full h-2 overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:shadow-current/20">
+                    <div
+                      className={`h-full ${getProgressColor()} transition-all duration-500 ease-out relative overflow-hidden`}
+                      style={{ width: `${progress}%` }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 animate-[shimmer_2s_infinite]" />
+                    </div>
+                  </div>
+                  <div className="text-right text-xs text-gray-500 mt-1 transition-colors duration-300 group-hover:text-gray-400">
+                    {progress}%
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                <Button
+                  onClick={handleActionClick}
+                  disabled={isComplete || cardPhase !== "idle"}
+                  className="w-full bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-cyan-600 text-black font-medium py-3 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/25 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group"
+                >
+                  <span className="relative z-10">
+                    {isComplete ? "Simulation Complete" : stepTitle}
+                  </span>
+                  {!isComplete && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  )}
+                </Button>
+
+                <div className="mt-6 text-xs text-gray-500 space-y-1">
+                  {[
+                    "Funds secured in AegisPay ledger",
+                    "AI risk engine monitoring",
+                    "Real-time authorization updates",
+                  ].map((text, index) => (
+                    <div
+                      key={index}
+                      className="transition-all duration-300 hover:text-gray-400 hover:translate-x-1"
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
+                      • {text}
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
-
-            {/* Progress Bar */}
-            <div className="mb-6 group">
-              <div className="text-gray-400 text-sm mb-2 transition-colors duration-300 group-hover:text-gray-300">
-                Progress
-              </div>
-              <div className="bg-gray-700 rounded-full h-2 overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:shadow-current/20">
-                <div
-                  className={`h-full ${getProgressColor()} transition-all duration-500 ease-out relative overflow-hidden`}
-                  style={{ width: `${progress}%` }}
-                >
-                  {/* Animated shimmer effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 animate-[shimmer_2s_infinite]" />
-                </div>
-              </div>
-              <div className="text-right text-xs text-gray-500 mt-1 transition-colors duration-300 group-hover:text-gray-400">
-                {progress}%
-              </div>
-            </div>
-
-            {/* Action Button */}
-            <Button
-              onClick={handleActionClick}
-              disabled={isComplete || cardPhase !== "idle"}
-              className="w-full bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-cyan-600 text-black font-medium py-3 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/25 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group"
-            >
-              <span className="relative z-10">
-                {isComplete ? "Simulation Complete" : stepTitle}
-              </span>
-              {!isComplete && (
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              )}
-            </Button>
-
-            {/* Additional Info */}
-            <div className="mt-6 text-xs text-gray-500 space-y-1">
-              {[
-                "Funds secured in AegisPay ledger",
-                "AI risk engine monitoring",
-                "Real-time authorization updates",
-              ].map((text, index) => (
-                <div
-                  key={index}
-                  className="transition-all duration-300 hover:text-gray-400 hover:translate-x-1"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  • {text}
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

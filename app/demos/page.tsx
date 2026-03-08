@@ -32,6 +32,9 @@ export default function DemosPage() {
     } else if (currentStep < selectedScenario.steps.length - 1) {
       setIsTyping(true);
       setCurrentStep((prev) => prev + 1);
+    } else if (currentStep === selectedScenario.steps.length - 1) {
+      // Advance to complete state — no typing animation
+      setCurrentStep((prev) => prev + 1);
     }
   };
 
@@ -69,8 +72,16 @@ export default function DemosPage() {
   };
 
   const currentStepData =
-    currentStep >= 0 ? selectedScenario.steps[currentStep] : null;
-  const isComplete = currentStep === selectedScenario.steps.length - 1;
+    currentStep >= 0 && currentStep < selectedScenario.steps.length
+      ? selectedScenario.steps[currentStep]
+      : null;
+  const isComplete = currentStep === selectedScenario.steps.length;
+  const prevStepAppState =
+    currentStep > 0
+      ? selectedScenario.steps[currentStep - 1].appState
+      : null;
+  const lastStepAppState =
+    selectedScenario.steps[selectedScenario.steps.length - 1].appState;
 
   return (
     <div className="min-h-screen">
@@ -226,14 +237,16 @@ export default function DemosPage() {
                     <div className="text-lg font-semibold text-cyan-300 mb-2">
                       {currentStep === -1
                         ? "Demo Ready"
-                        : `Step ${currentStep + 1} of ${selectedScenario.steps.length}`}
+                        : isComplete
+                          ? "Complete"
+                          : `Step ${currentStep + 1} of ${selectedScenario.steps.length}`}
                     </div>
                     <div className="flex space-x-1 justify-center">
                       {selectedScenario.steps.map((_, index) => (
                         <div
                           key={index}
                           className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                            currentStep >= 0 && index <= currentStep
+                            isComplete || (currentStep >= 0 && index <= currentStep)
                               ? "bg-cyan-400"
                               : "bg-gray-600"
                           }`}
@@ -273,22 +286,41 @@ export default function DemosPage() {
 
               <AppMockup
                 title={selectedScenario.title}
-                currentAuth={currentStepData?.appState?.currentAuth || "$0.00"}
-                balance={currentStepData?.appState?.balance || "$1000.00"}
-                status={currentStepData?.appState?.status || "Ready"}
-                progress={currentStepData?.appState?.progress || 0}
+                currentAuth={
+                  isComplete
+                    ? lastStepAppState?.currentAuth || "$0.00"
+                    : prevStepAppState?.currentAuth || "$0.00"
+                }
+                balance={
+                  isComplete
+                    ? lastStepAppState?.balance || "$1000.00"
+                    : prevStepAppState?.balance || "$1000.00"
+                }
+                status={
+                  isComplete
+                    ? lastStepAppState?.status || "Complete"
+                    : prevStepAppState?.status || "Ready"
+                }
+                progress={
+                  isComplete
+                    ? lastStepAppState?.progress || 100
+                    : prevStepAppState?.progress || 0
+                }
                 onNextStep={handleNextStep}
                 stepTitle={
                   isComplete
                     ? "Simulation Complete"
-                    : selectedScenario.steps[currentStep + 1]?.appState
-                          ?.actionStepTitle || "Start"
+                    : currentStep === -1
+                      ? selectedScenario.steps[0]?.appState
+                            ?.actionStepTitle || "Start"
+                      : currentStepData?.appState?.actionStepTitle || "Start"
                 }
+                isStartScreen={currentStep === -1}
                 isComplete={isComplete}
                 merchantType={selectedScenario.merchantType}
                 userWallet={selectedScenario.userWallet}
                 isSigningStep={
-                  selectedScenario.steps[currentStep + 1]?.terminalPanes?.some(
+                  currentStepData?.terminalPanes?.some(
                     (p) => p.label === "Sign Payload",
                   ) ?? false
                 }
@@ -309,7 +341,12 @@ export default function DemosPage() {
                 panes={
                   currentStep === -1
                     ? undefined
-                    : currentStepData?.terminalPanes
+                    : selectedScenario.steps[
+                        Math.min(
+                          currentStep,
+                          selectedScenario.steps.length - 1,
+                        )
+                      ].terminalPanes
                 }
                 isTyping={isTyping}
                 onTypingComplete={() => setIsTyping(false)}
@@ -388,22 +425,25 @@ export default function DemosPage() {
                   </CardContent>
                 </Card>
               ) : (
-                <Card className="aegis-glass border-cyan-400/20">
-                  <CardContent className="p-6">
-                    <h4 className="font-semibold text-cyan-400 mb-3 text-lg">
-                      {currentStepData?.title}
-                    </h4>
-                    <p className="text-gray-400 mb-4 leading-relaxed">
-                      {currentStepData?.description}
-                    </p>
-                    {currentStepData?.userAction &&
-                      (() => {
-                        const isRejectionStep =
-                          currentStepData?.appState?.status?.includes(
-                            "Rejected",
-                          ) ||
-                          currentStepData?.appState?.status?.includes("Locked");
-                        return (
+                (() => {
+                  const displayStep = isComplete
+                    ? selectedScenario.steps[
+                        selectedScenario.steps.length - 1
+                      ]
+                    : currentStepData;
+                  const isRejectionStep =
+                    displayStep?.appState?.status?.includes("Rejected") ||
+                    displayStep?.appState?.status?.includes("Locked");
+                  return (
+                    <Card className="aegis-glass border-cyan-400/20">
+                      <CardContent className="p-6">
+                        <h4 className="font-semibold text-cyan-400 mb-3 text-lg">
+                          {displayStep?.title}
+                        </h4>
+                        <p className="text-gray-400 mb-4 leading-relaxed">
+                          {displayStep?.description}
+                        </p>
+                        {displayStep?.userAction && (
                           <div
                             className={`mt-4 p-3 rounded-lg ${
                               isRejectionStep
@@ -429,13 +469,14 @@ export default function DemosPage() {
                                   : "text-green-300"
                               }`}
                             >
-                              {currentStepData.userAction}
+                              {displayStep.userAction}
                             </div>
                           </div>
-                        );
-                      })()}
-                  </CardContent>
-                </Card>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })()
               )}
             </div>
           </div>
@@ -447,13 +488,19 @@ export default function DemosPage() {
                 <div
                   key={index}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index <= currentStep ? "bg-blue-400" : "bg-gray-600"
+                    isComplete || (currentStep >= 0 && index <= currentStep)
+                      ? "bg-blue-400"
+                      : "bg-gray-600"
                   }`}
                 />
               ))}
             </div>
             <p className="text-sm text-gray-500">
-              Step {currentStep + 1} of {selectedScenario.steps.length}
+              {currentStep === -1
+                ? "Demo Ready"
+                : isComplete
+                  ? "Complete"
+                  : `Step ${currentStep + 1} of ${selectedScenario.steps.length}`}
             </p>
           </div>
         </div>
