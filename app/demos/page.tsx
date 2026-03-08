@@ -281,7 +281,8 @@ export default function DemosPage() {
                 stepTitle={
                   isComplete
                     ? "Simulation Complete"
-                    : currentStepData?.appState?.actionStepTitle || "Start"
+                    : selectedScenario.steps[currentStep + 1]?.appState
+                          ?.actionStepTitle || "Start"
                 }
                 isComplete={isComplete}
                 merchantType={selectedScenario.merchantType}
@@ -351,7 +352,7 @@ export default function DemosPage() {
                       </div>
                       {simulationMode === "view-only" ? (
                         <div className="text-sm text-blue-300">
-                          Click "Start" or press Enter to begin the guided
+                          Click "Authorize" button in mobile UI or press Enter in CLI to begin the guided
                           simulation
                         </div>
                       ) : (
