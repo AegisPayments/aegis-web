@@ -47,7 +47,7 @@ export const demoConfig: TDemoConfig = {
                 {
                     id: 1,
                     title: "Sign & Authorize Payment",
-                    description: "User signs an EIP-712 off-chain authorization for the estimated charging session. The signed payload is forwarded to the CRE HTTP trigger which validates the signature, queries Firestore for user history, runs AI-powered fraud detection, and executes the authorization on-chain via Chainlink Forwarder. An authorization log is written to Firestore for full auditability.",
+                    description: "User signs an EIP-712 off-chain authorization for the estimated charging session. The signed payload is forwarded to the CRE HTTP trigger which relays the signature, queries Firestore for user history, runs AI-powered fraud detection, and executes the authorization on-chain via Chainlink Forwarder. An authorization log is written to Firestore for full auditability.",
                     userAction: "User taps 'Start Charging'. The app signs the authorization message locally and forwards it to the Aegis CRE workflow for AI fraud assessment before locking funds on-chain.",
                     terminalPanes: [
                         {
@@ -127,7 +127,7 @@ export const demoConfig: TDemoConfig = {
                 {
                     id: 1,
                     title: "Sign & Authorize Ride",
-                    description: "User signs an EIP-712 off-chain authorization for the estimated fare. The CRE workflow validates the signature, queries Firestore for user transaction history, runs AI-powered fraud detection, and executes the authorization on-chain via Chainlink Forwarder. An authorization log is written to Firestore for full auditability.",
+                    description: "User signs an EIP-712 off-chain authorization for the estimated fare. The CRE workflow relays the signature, queries Firestore for user transaction history, runs AI-powered fraud detection, and executes the authorization on-chain via Chainlink Forwarder. An authorization log is written to Firestore for full auditability.",
                     userAction: "User confirms the ride booking. The app signs the $18 authorization and forwards it to the Aegis CRE workflow for AI fraud assessment before locking funds on-chain.",
                     terminalPanes: [
                         {
@@ -207,7 +207,7 @@ export const demoConfig: TDemoConfig = {
                 {
                     id: 1,
                     title: "Sign & Authorize Compute",
-                    description: "AI agent signs an EIP-712 off-chain authorization for the initial compute batch. The CRE workflow validates the signature, queries Firestore for agent usage history, runs AI-powered fraud detection, and executes the authorization on-chain via Chainlink Forwarder. An authorization log is written to Firestore for full auditability.",
+                    description: "AI agent signs an EIP-712 off-chain authorization for the initial compute batch. The CRE workflow relays the signature, queries Firestore for agent usage history, runs AI-powered fraud detection, and executes the authorization on-chain via Chainlink Forwarder. An authorization log is written to Firestore for full auditability.",
                     userAction: "AI agent automatically requests compute resources. The authorization is signed and forwarded to the Aegis CRE workflow for fraud assessment before locking funds on-chain.",
                     terminalPanes: [
                         {
@@ -288,7 +288,7 @@ export const demoConfig: TDemoConfig = {
                 {
                     id: 1,
                     title: "Sign & Authorize Ride",
-                    description: "Normal ride authorization for $18. The CRE workflow validates the signature, runs AI fraud detection, and approves the authorization on-chain. This step succeeds — the suspicious activity comes next.",
+                    description: "Normal ride authorization for $18. The CRE workflow relays the signature, runs AI fraud detection, and approves the authorization on-chain. This step succeeds — the suspicious activity comes next.",
                     userAction: "User books a standard ride. Authorization for $18 is signed and processed normally through the Aegis CRE workflow.",
                     terminalPanes: [
                         {
