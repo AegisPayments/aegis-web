@@ -229,7 +229,7 @@ export function AppMockup({
             <Card className="bg-gray-800/50 border-gray-700 p-4 mb-6 transition-all duration-300 hover:bg-gray-800/70 hover:border-gray-600 hover:shadow-lg hover:shadow-white/5 group">
               <div className="text-center">
                 <div className="text-gray-400 text-sm mb-1 transition-colors duration-300 group-hover:text-gray-300">
-                  Available Balance
+                  Account Balance
                 </div>
                 <div className="text-2xl font-bold text-white transition-transform duration-300 group-hover:scale-105">
                   {balance}
