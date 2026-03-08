@@ -75,7 +75,7 @@ export function TerminalMockup({
       startTypingPane(0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTyping]);
+  }, [isTyping, panes]);
 
   // Keyboard event for start screen
   useEffect(() => {
