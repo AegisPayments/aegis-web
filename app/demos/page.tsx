@@ -311,8 +311,7 @@ export default function DemosPage() {
                   isComplete
                     ? "Simulation Complete"
                     : currentStep === -1
-                      ? selectedScenario.steps[0]?.appState
-                            ?.actionStepTitle || "Start"
+                      ? "Start"
                       : currentStepData?.appState?.actionStepTitle || "Start"
                 }
                 isStartScreen={currentStep === -1}
@@ -395,7 +394,7 @@ export default function DemosPage() {
                       </div>
                       {simulationMode === "view-only" ? (
                         <div className="text-sm text-blue-300">
-                          Click "Authorize" button in mobile UI or press Enter in CLI to begin the guided
+                          Click "Start" button in mobile UI or press Enter in CLI to begin the guided
                           simulation
                         </div>
                       ) : (
