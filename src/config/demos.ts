@@ -85,7 +85,7 @@ export const demoConfig: TDemoConfig = {
                         currentAuth: "$35.00",
                         balance: "$965.00",
                         status: "Extended Session",
-                        actionStepTitle: "Extend Session",
+                        actionStepTitle: "Session Extended",
                         progress: 65
                     }
                 },
@@ -165,7 +165,7 @@ export const demoConfig: TDemoConfig = {
                         currentAuth: "$30.00",
                         balance: "$970.00",
                         status: "Route Adjusted",
-                        actionStepTitle: "Accept Route Change",
+                        actionStepTitle: "Route Changed",
                         progress: 65
                     }
                 },
@@ -245,7 +245,7 @@ export const demoConfig: TDemoConfig = {
                         currentAuth: "$8.00",
                         balance: "$992.00",
                         status: "High Compute Mode",
-                        actionStepTitle: "Scale Resources",
+                        actionStepTitle: "Resources Scaled",
                         progress: 65
                     }
                 },
