@@ -40,8 +40,10 @@ export default function DemosPage() {
 
   const handlePrevStep = () => {
     if (currentStep > -1) {
-      setCurrentStep((prev) => prev - 1);
-      setIsTyping(false);
+      const newStep = currentStep - 1;
+      setCurrentStep(newStep);
+      // Trigger typing for the previous step (unless going back to start screen)
+      setIsTyping(newStep >= 0);
     }
   };
 
