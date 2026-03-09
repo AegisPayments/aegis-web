@@ -13,7 +13,8 @@ export default function Home() {
         <HeroSection />
         <FeatureGrid />
         {/* <HowItWorks /> */}
-        <VideoSection videoUrl="https://youtube.com/watch?v=dQw4w9WgXcQ" />
+        {/* <VideoSection videoUrl="https://youtube.com/watch?v=dQw4w9WgXcQ" /> */}
+        <VideoSection videoUrl="https://youtu.be/5Pnyc_w6xvY" />
       </main>
 
       <Footer />
